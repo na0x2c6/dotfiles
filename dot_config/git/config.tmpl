@@ -1,0 +1,43 @@
+[user]
+	name = Ueda Naoaki
+	email = {{ .email }}
+	signingkey = {{ .signingkey }}
+[core]
+{{ if eq .chezmoi.os "linux" }}
+	editor = vimx
+{{ else }}
+	editor = vim
+{{ end }}
+	quotepath = false
+	abbrev = 12
+	multiPackIndex = true
+[merge]
+{{ if eq .chezmoi.os "linux" }}
+	tool = vimx -d
+{{ else }}
+	tool = vimdiff
+{{ end }}
+	conflictstyle = zdiff3
+	log = true
+[mergetool]
+	keepBackup = false
+[pull]
+	rebase = true
+[init]
+	defaultBranch = main
+[pager]
+    log = diff-highlight | less
+    show = diff-highlight | less
+    diff = diff-highlight | less
+[diff]
+	algorithm = histogram
+	colorMoved = dimmed-zebra
+	colorMovedWS = allow-indentation-change
+[gpg]
+	format = ssh
+[gpg "ssh"]
+	allowedSignersFile = ~/.ssh/allowed_signers
+[push]
+	useForceIfIncludes = true
+[commit]
+	cleanup = scissors

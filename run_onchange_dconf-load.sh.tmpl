@@ -1,0 +1,19 @@
+#!/bin/bash
+
+set -Eeuv
+
+if [[ $(uname -s) != "Linux" ]] ; then
+    exit 0
+fi
+
+# hash: {{ include "dconf-org-gnome-desktop-peripherals-touchpad.ini" | sha256sum }}
+dconf load /org/gnome/desktop/peripherals/touchpad/ < {{ joinPath .chezmoi.sourceDir "dconf-org-gnome-desktop-peripherals-touchpad.ini" | quote }}
+
+# hash: {{ include "dconf-org-gnome-shell-keybindings.ini" | sha256sum }}
+dconf load /org/gnome/shell/keybindings/ < {{ joinPath .chezmoi.sourceDir "dconf-org-gnome-shell-keybindings.ini" | quote }}
+
+# hash: {{ include "dconf-org-gnome-desktop-wm-keybindings.ini" | sha256sum }}
+dconf load /org/gnome/desktop/wm/keybindings/ < {{ joinPath .chezmoi.sourceDir "dconf-org-gnome-desktop-wm-keybindings.ini" | quote }}
+
+# hash: {{ include "dconf-org-gnome-settings-daemon-plugins-media-keys.ini" | sha256sum }}
+dconf load /org/gnome/settings-daemon/plugins/media-keys/ < {{ joinPath .chezmoi.sourceDir "dconf-org-gnome-settings-daemon-plugins-media-keys.ini" | quote }}

@@ -1,0 +1,82 @@
+(( ${+commands[direnv]} )) && emulate zsh -c "$(direnv export zsh)"
+
+# Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
+# Initialization code that may require console input (password prompts, [y/n]
+# confirmations, etc.) must go above this block; everything else may go below.
+if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
+  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
+fi
+
+(( ${+commands[direnv]} )) && emulate zsh -c "$(direnv hook zsh)"
+
+export PAGER='less -R'
+
+# for `Ctrl + w`
+export WORDCHARS='*?_.[]~-=&;!#$%^(){}<>'
+export DIRSTACKSIZE=8
+
+bindkey -e
+setopt clobber
+setopt hist_ignore_space
+setopt autopushd
+unsetopt share_history
+unsetopt multios
+unsetopt AUTO_REMOVE_SLASH
+bindkey \^U backward-kill-line
+
+SAVEHIST=3000
+HISTFILE=.zsh_history
+
+export GPG_TTY=$TTY
+
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+export FZF_DEFAULT_COMMAND='rg --files --follow --hidden -g "!{.git,node_modules}/*" 2>/dev/null'
+
+fpath=(~/.config/zsh/completions $fpath)
+
+autoload -Uz compinit && compinit
+autoload edit-command-line
+zle -N edit-command-line
+bindkey '^X^e' edit-command-line
+
+export PATH="$HOME/local/bin:$PATH"
+export PATH="$HOME/.rbenv/shims:$HOME/.phpenv/shims:$PATH"
+export PATH="$HOME/.nodenv/bin:$PATH"
+export PATH="$HOME/.phpenv/bin:$PATH"
+
+export MANPATH="$HOME/local/share/man:$MANPATH"
+
+export PYENV_ROOT="$HOME/.pyenv"
+command -v pyenv >/dev/null || export PATH="$PYENV_ROOT/bin:$PATH"
+
+# https://github.com/pyenv/pyenv/issues/784#issuecomment-404850327
+if command -v pyenv 1>/dev/null 2>&1; then
+  eval "$(pyenv init - --no-rehash)"
+fi
+
+if command -v nodenv 1>/dev/null 2>&1; then
+  eval "$(nodenv init - --no-rehash)"
+fi
+if command -v phpenv 1>/dev/null 2>&1; then
+  eval "$(phpenv init - --no-rehash)"
+fi
+source ~/.powerlevel10k/powerlevel10k.zsh-theme
+
+# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
+[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+
+export DOCKER_BUILDKIT=0
+
+{{ if eq .chezmoi.os "linux" }}
+alias vim=vimx
+export EDITOR='vimx'
+export VISUAL='vimx'
+export DOCKER_HOST=unix:///run/user/1000/podman/podman.sock
+{{ end }}
+
+{{ if eq .chezmoi.os "darwin" }}
+export EDITOR='vim'
+export VISUAL='vim'
+export PATH="/opt/homebrew/bin:$PATH"
+export MANPATH="/opt/homebrew/share/man:$MANPATH"
+{{ end }}

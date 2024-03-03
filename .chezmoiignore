@@ -1,0 +1,9 @@
+dconf-org-gnome-desktop-peripherals-touchpad.ini
+dconf-org-gnome-desktop-wm-keybindings.ini
+dconf-org-gnome-settings-daemon-plugins-media-keys.ini
+dconf-org-gnome-shell-keybindings.ini
+
+{{- if ne .chezmoi.os "linux" }}
+.config/systemd
+.config/xremap
+{{ end }}
