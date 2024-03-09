@@ -6,6 +6,11 @@
 # To allow xremap to fetch the focused app name using D-Bus,
 # you need to enable the extension which is in:
 #    https://extensions.gnome.org/extension/5060/xremap/
+modmap:
+  - name: Global
+    remap:
+      CapsLock: LeftCtrl
+
 keymap:
   - name: macOS like
     application:
