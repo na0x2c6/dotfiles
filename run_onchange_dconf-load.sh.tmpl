@@ -6,9 +6,6 @@ if [[ $(uname -s) != "Linux" ]] ; then
     exit 0
 fi
 
-# hash: {{ include "dconf-org-gnome-desktop-peripherals-touchpad.ini" | sha256sum }}
-dconf load /org/gnome/desktop/peripherals/touchpad/ < {{ joinPath .chezmoi.sourceDir "dconf-org-gnome-desktop-peripherals-touchpad.ini" | quote }}
-
 # hash: {{ include "dconf-org-gnome-shell-keybindings.ini" | sha256sum }}
 dconf load /org/gnome/shell/keybindings/ < {{ joinPath .chezmoi.sourceDir "dconf-org-gnome-shell-keybindings.ini" | quote }}
 
