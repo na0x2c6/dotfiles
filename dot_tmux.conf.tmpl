@@ -1,0 +1,85 @@
+# prefix
+set -g prefix C-q
+unbind C-b
+
+# keystroke delay
+set -sg escape-time 1
+
+# to reload
+bind r source-file ~/.tmux.conf \; display "Reloaded!"
+
+# C-q*2 = send q
+bind C-q send-prefix
+
+bind v split-window -h
+bind s split-window -v
+
+# vim keybind
+bind h select-pane -L
+bind j select-pane -D
+bind k select-pane -U
+bind l select-pane -R
+bind -r C-h select-window -t :-
+bind -r C-l select-window -t :+
+
+bind < resize-pane -L 5
+bind - resize-pane -D 5
+bind + resize-pane -U 5
+bind > resize-pane -R 5
+
+bind S choose-tree -s
+
+# for mouse
+setw -g mode-keys vi
+
+# refs: https://github.com/arcticicestudio/nord-tmux/blob/develop/src/nord.conf
+#+---------+
+#+ Options +
+#+---------+
+set -g status-interval 2
+set -g status on
+
+#+--------+
+#+ Status +
+#+--------+
+#+--- Layout ---+
+set -g status-justify left
+
+#+--- Colors ---+
+set -g status-style bg=black,fg=white,none
+set -g default-terminal "xterm-256color"
+
+#+-------+
+#+ Panes +
+#+-------+
+set -g pane-border-style bg=black,fg=black
+set -g pane-active-border-style bg=black,fg=brightblack
+set -g display-panes-colour black
+set -g display-panes-active-colour brightblack
+
+#+------------+
+#+ Clock Mode +
+#+------------+
+setw -g clock-mode-colour cyan
+
+#+----------+
+#+ Messages +
+#+---------+
+set -g message-style fg=cyan,bg=brightblack
+set -g message-command-style fg=cyan,bg=brightblack
+
+# for status
+set-option -g status-position bottom
+set-option -g status-right-length 140
+set-option -g status-right "#[fg=white,bg=default]LA: #(LANG=C uptime | perl -nlae 'print join(\" \", @F[-3..-1])')"
+
+# for clipboard
+{{ if eq .chezmoi.os "linux" }}
+bind-key    -T copy-mode-vi y     send-keys -X copy-pipe-and-cancel "wl-copy"
+bind-key    -T copy-mode-vi Enter send-keys -X copy-pipe-and-cancel "wl-copy"
+{{ end }}
+
+{{ if eq .chezmoi.os "darwin" }}
+bind-key    -T copy-mode-vi y     send-keys -X copy-pipe-and-cancel "pbcopy"
+bind-key    -T copy-mode-vi Enter send-keys -X copy-pipe-and-cancel "pbcopy"
+{{ end }}
