@@ -17,3 +17,6 @@ dconf load /org/gnome/desktop/wm/keybindings/ < {{ joinPath .chezmoi.sourceDir "
 
 # hash: {{ include "dconf-org-gnome-settings-daemon-plugins-media-keys.ini" | sha256sum }}
 dconf load /org/gnome/settings-daemon/plugins/media-keys/ < {{ joinPath .chezmoi.sourceDir "dconf-org-gnome-settings-daemon-plugins-media-keys.ini" | quote }}
+
+# hash: {{ include "dconf-org-gnome-dektop-interface.ini" | sha256sum }}
+dconf load /org/gnome/desktop/interface/ < {{ joinPath .chezmoi.sourceDir "dconf-org-gnome-dektop-interface.ini" | quote }}
