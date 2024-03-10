@@ -1,8 +1,10 @@
 {{- $gitname := promptStringOnce . "gitname" "Git user name" -}}
 {{- $email := promptStringOnce . "email" "Email address" -}}
 {{- $signingkey := promptStringOnce . "signingkey" "Signing key" -}}
+{{- $vimrepo := promptStringOnce . "vimrepo" "Vim repository" -}}
 
 [data]
     gitname = {{ $gitname | quote }}
     email = {{ $email | quote }}
     signingkey = {{ $signingkey | quote }}
+    vimrepo = {{ $vimrepo | quote }}

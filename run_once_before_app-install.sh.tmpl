@@ -13,3 +13,7 @@ sudo dnf install -y copyq tmux wl-clipboard \
 if [[ ! -e ~/.powerlevel10k ]] ; then
     git clone --filter=blob:none https://github.com/romkatv/powerlevel10k.git ~/.powerlevel10k
 fi
+
+if [[ ! -e ~/.vim ]] ; then
+    git clone {{ $vimrepo }} ~/.vim
+fi
