@@ -15,5 +15,5 @@ if [[ ! -e ~/.powerlevel10k ]] ; then
 fi
 
 if [[ ! -e ~/.vim ]] ; then
-    git clone {{ $vimrepo }} ~/.vim
+    git clone {{ .vimrepo }} ~/.vim
 fi
