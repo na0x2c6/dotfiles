@@ -17,3 +17,7 @@ fi
 if [[ ! -e ~/.vim ]] ; then
     git clone {{ .vimrepo }} ~/.vim
 fi
+
+if ! which diff-highlight > /dev/null ; then
+    sudo ln -s /usr/share/git-core/contrib/diff-highlight /usr/local/bin/
+fi
