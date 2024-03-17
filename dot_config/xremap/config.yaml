@@ -55,6 +55,7 @@ keymap:
       Super-w: C-w
       Super-t: C-t
       Super-l: C-l
+      Super-r: C-r
 
   - name: Teminal
     application:

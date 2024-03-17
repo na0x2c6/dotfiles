@@ -6,6 +6,7 @@ if [[ $(uname -s) != "Linux" ]] ; then
     exit 0
 fi
 
+# xremap.service hash: {{ include "dot_config/xremap/config.yaml" | sha256sum }}
 # xremap.service hash: {{ include "dot_config/systemd/user/xremap.service" | sha256sum }}
 systemctl --user daemon-reload
 systemctl --user enable xremap
