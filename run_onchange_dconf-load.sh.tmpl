@@ -17,3 +17,7 @@ dconf load /org/gnome/settings-daemon/plugins/media-keys/ < {{ joinPath .chezmoi
 
 # hash: {{ include "dconf-org-gnome-dektop-interface.ini" | sha256sum }}
 dconf load /org/gnome/desktop/interface/ < {{ joinPath .chezmoi.sourceDir "dconf-org-gnome-dektop-interface.ini" | quote }}
+
+# hash: {{ include "dconf-org-gnome-terminal-legacy-profiles.ini" | sha256sum }}
+dconf load /org/gnome/terminal/legacy/profiles:/ < {{ joinPath .chezmoi.sourceDir "dconf-org-gnome-terminal-legacy-profiles.ini" | quote }}
+gsettings set org.gnome.Terminal.ProfilesList default '47074058-091f-473f-aae4-694e600bb759'

@@ -9,5 +9,6 @@ dconf dump /org/gnome/desktop/peripherals/touchpad/       > dconf-org-gnome-desk
 dconf dump /org/gnome/shell/keybindings/                  > dconf-org-gnome-shell-keybindings.ini
 dconf dump /org/gnome/settings-daemon/plugins/media-keys/ > dconf-org-gnome-settings-daemon-plugins-media-keys.ini
 dconf dump /org/gnome/desktop/interface/                  > dconf-org-gnome-dektop-interface.ini
+dconf dump /org/gnome/terminal/legacy/profiles:/          > dconf-org-gnome-terminal-legacy-profiles.ini
 
 popd
