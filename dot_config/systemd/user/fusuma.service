@@ -1,0 +1,12 @@
+[Unit]
+Description=Starts fusuma user service
+After=graphical.target
+
+[Service]
+Type=simple
+ExecStart=/usr/local/bin/fusuma
+Restart=on-failure
+
+[Install]
+WantedBy=default.target
+

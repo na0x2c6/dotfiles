@@ -1,0 +1,12 @@
+#!/bin/bash
+
+set -Eeuv
+
+if [[ $(uname -s) != "Linux" ]] ; then
+    exit 0
+fi
+
+# hash: {{ include "dot_config/systemd/user/ydotoold.service" | sha256sum }}
+systemctl --user daemon-reload
+systemctl --user enable ydotoold
+systemctl --user restart ydotoold

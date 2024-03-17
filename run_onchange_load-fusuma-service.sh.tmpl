@@ -1,0 +1,13 @@
+#!/bin/bash
+
+set -Eeuv
+
+if [[ $(uname -s) != "Linux" ]] ; then
+    exit 0
+fi
+
+# hash: {{ include "dot_config/fusuma/config.yml" | sha256sum }}
+# hash: {{ include "dot_config/systemd/user/fusuma.service" | sha256sum }}
+systemctl --user daemon-reload
+systemctl --user enable fusuma
+systemctl --user restart fusuma

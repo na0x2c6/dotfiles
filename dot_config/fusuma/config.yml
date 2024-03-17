@@ -1,0 +1,10 @@
+swipe:
+  3:
+    begin:
+      command: ydotool click 0x40
+    update:
+      command: ydotool mousemove -x $move_x -y $move_y
+      interval: 0.01
+      accel: 2
+    end:
+      command: ydotool click 0x80

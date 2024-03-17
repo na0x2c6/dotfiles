@@ -8,4 +8,5 @@ fi
 
 # xremap.service hash: {{ include "dot_config/systemd/user/xremap.service" | sha256sum }}
 systemctl --user daemon-reload
-systemctl --user enable --now xremap
+systemctl --user enable xremap
+systemctl --user restart xremap

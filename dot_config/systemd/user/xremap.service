@@ -1,5 +1,5 @@
 [Unit]
-Description=Start xremap with user configuration
+Description=Xremap service with user configuration
 After=graphical.target
 
 [Service]
