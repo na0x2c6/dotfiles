@@ -7,10 +7,6 @@ if [[ $(uname -s) != "Linux" ]] ; then
     exit 0
 fi
 
-if [[ -e ~/.cargo/bin/xremap ]] ; then
-    exit 0
-fi
-
 sudo dnf -y install rust cargo ruby cmake scdoc
 sudo usermod -aG input $USER
 echo 'KERNEL=="uinput", GROUP="input", TAG+="uaccess"' | sudo tee /etc/udev/rules.d/99-input.rules
@@ -28,18 +24,22 @@ if [[ ! -e ~/.cargo/bin/xremap ]] ; then
 fi
 
 uuid="xremap@k0kubun.com"
-repo="https://github.com/xremap/xremap-gnome.git"
 if [[ ! -e ~/.local/share/gnome-shell/extensions/$uuid ]] ; then
-    git clone $repo ~/.local/share/gnome-shell/extensions/$uuid
-    gnome-extensions enable $uuid
+    gdbus call --session \
+           --dest org.gnome.Shell.Extensions \
+           --object-path /org/gnome/Shell/Extensions \
+           --method org.gnome.Shell.Extensions.InstallRemoteExtension \
+           "$uuid" || true
 fi
 
 # For 4 finger swipe
 uuid="swap-finger-gestures-3-4@icedman.github.com"
-repo="https://github.com/icedman/swap-finger-gestures-3-4.git"
 if [[ ! -e ~/.local/share/gnome-shell/extensions/$uuid ]] ; then
-    git clone $repo ~/.local/share/gnome-shell/extensions/$uuid
-    gnome-extensions enable $uuid
+    gdbus call --session \
+           --dest org.gnome.Shell.Extensions \
+           --object-path /org/gnome/Shell/Extensions \
+           --method org.gnome.Shell.Extensions.InstallRemoteExtension \
+           "$uuid" || true
 fi
 
 # For ydotool
