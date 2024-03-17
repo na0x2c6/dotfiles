@@ -40,7 +40,12 @@ zle -N edit-command-line
 bindkey '^X^e' edit-command-line
 
 export PATH="$HOME/local/bin:$PATH"
-export PATH="$HOME/.rbenv/shims:$HOME/.phpenv/shims:$PATH"
+
+if [[ -e ~/.rbenv ]] ; then
+  eval "$(~/.rbenv/bin/rbenv init - zsh)"
+  export PATH="$HOME/.rbenv/shims:$HOME/.phpenv/shims:$PATH"
+fi
+
 export PATH="$HOME/.nodenv/bin:$PATH"
 export PATH="$HOME/.phpenv/bin:$PATH"
 
