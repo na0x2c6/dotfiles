@@ -1,0 +1,14 @@
+[Unit]
+Description=Starts copyq user service
+After=graphical.target
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/copyq
+Restart=on-failure
+
+# see: https://github.com/hluk/CopyQ/issues/1243
+Environment="QT_QPA_PLATFORM=xcb"
+
+[Install]
+WantedBy=default.target
