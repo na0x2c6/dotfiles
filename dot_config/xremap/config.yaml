@@ -11,6 +11,13 @@ modmap:
     remap:
       CapsLock: LeftCtrl
 
+  - name: AT Translated Set 2 keyboard
+    device:
+      only: 'AT Translated Set 2 keyboard'
+    remap:
+      Alt_L: LeftMeta
+      LeftMeta: Alt_L
+
 keymap:
   - name: macOS like
     application:
