@@ -29,7 +29,7 @@ HISTFILE=$HOME/.zsh_history
 
 export GPG_TTY=$TTY
 
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+[ -f ~/.fzf.zsh ] && [ -d ~/.fzf ] && source ~/.fzf.zsh
 export FZF_DEFAULT_COMMAND='rg --files --follow --hidden -g "!{.git,node_modules}/*" 2>/dev/null'
 
 fpath=(~/.config/zsh/completions $fpath)

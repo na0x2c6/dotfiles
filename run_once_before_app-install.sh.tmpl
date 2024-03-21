@@ -22,6 +22,8 @@ if ! which diff-highlight > /dev/null ; then
     sudo ln -s /usr/share/git-core/contrib/diff-highlight /usr/local/bin/
 fi
 
-if [[ ! -f ~/.fzf ]] ; then
+if [[ ! -e ~/.fzf ]] ; then
     git clone --filter=blob:none https://github.com/junegunn/fzf.git ~/.fzf
+    cd $_
+    ./install --key-bindings --completion --no-update-rc
 fi
