@@ -21,7 +21,7 @@ modmap:
 keymap:
   - name: macOS like
     application:
-      not: [/terminal/]
+      not: [/terminal/, /Gvim/]
     remap:
       # Cursor
       C-b: { with_mark: left }
@@ -67,5 +67,13 @@ keymap:
     application:
       only: [/terminal/]
     remap:
+      Super-c: C-Shift-c
+      Super-v: C-Shift-v
+
+  - name: Gvim
+    application:
+      only: [/Gvim/]
+    remap:
+      Super-a: C-Shift-a
       Super-c: C-Shift-c
       Super-v: C-Shift-v
