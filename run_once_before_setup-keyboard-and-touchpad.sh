@@ -7,6 +7,8 @@ if [[ $(uname -s) != "Linux" ]] ; then
     exit 0
 fi
 
+source "$(chezmoi source-path)/_utils.sh"
+
 sudo dnf -y install rust cargo ruby cmake scdoc
 sudo usermod -aG input $USER
 echo 'KERNEL=="uinput", GROUP="input", TAG+="uaccess"' | sudo tee /etc/udev/rules.d/99-input.rules
@@ -23,24 +25,12 @@ if [[ ! -e ~/.cargo/bin/xremap ]] ; then
     cargo install xremap --features ${XDG_CURRENT_DESKTOP,,}
 fi
 
-uuid="xremap@k0kubun.com"
-if [[ ! -e ~/.local/share/gnome-shell/extensions/$uuid ]] ; then
-    gdbus call --session \
-           --dest org.gnome.Shell.Extensions \
-           --object-path /org/gnome/Shell/Extensions \
-           --method org.gnome.Shell.Extensions.InstallRemoteExtension \
-           "$uuid" || true
-fi
+__install_remote_gnome_extension "xremap@k0kubun.com" \
+    || true
 
 # For 4 finger swipe
-uuid="swap-finger-gestures-3-4@icedman.github.com"
-if [[ ! -e ~/.local/share/gnome-shell/extensions/$uuid ]] ; then
-    gdbus call --session \
-           --dest org.gnome.Shell.Extensions \
-           --object-path /org/gnome/Shell/Extensions \
-           --method org.gnome.Shell.Extensions.InstallRemoteExtension \
-           "$uuid" || true
-fi
+__install_remote_gnome_extension "swap-finger-gestures-3-4@icedman.github.com" \
+    || true
 
 # For ydotool
 if ! which ydotool > /dev/null ; then
