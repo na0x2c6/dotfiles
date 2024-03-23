@@ -11,9 +11,12 @@ source "$(chezmoi source-path)/_utils.sh"
 
 sudo dnf -y install rust cargo ruby cmake scdoc
 sudo usermod -aG input $USER
-echo 'KERNEL=="uinput", GROUP="input", TAG+="uaccess"' | sudo tee /etc/udev/rules.d/99-input.rules
-sudo udevadm trigger
-sudo udevadm control --reload-rules
+
+if [[ ! -e /etc/udev/rules.d/99-input.rules ]] ; then
+    echo 'KERNEL=="uinput", GROUP="input", TAG+="uaccess"' | sudo tee /etc/udev/rules.d/99-input.rules
+    sudo udevadm trigger
+    sudo udevadm control --reload-rules
+fi
 
 mkdir -p ~/.local/share/gnome-shell/extensions
 mkdir -p ~/local/src
