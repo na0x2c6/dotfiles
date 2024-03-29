@@ -1,6 +1,7 @@
 [Unit]
 Description=Starts fusuma user service
-After=graphical.target
+After=graphical.target ydotoold.service
+Requires=ydotoold.service
 
 [Service]
 Type=simple
@@ -8,5 +9,5 @@ ExecStart=/usr/local/bin/fusuma
 Restart=on-failure
 
 [Install]
-WantedBy=default.target
+WantedBy=multi-user.target
 

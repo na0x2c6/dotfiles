@@ -1,6 +1,7 @@
 [Unit]
 Description=Starts copyq user service
-After=graphical.target
+After=graphical-session.target
+BindsTo=graphical-session.target
 
 [Service]
 Type=simple
@@ -11,4 +12,4 @@ Restart=on-failure
 Environment="QT_QPA_PLATFORM=xcb"
 
 [Install]
-WantedBy=default.target
+WantedBy=basic.target
