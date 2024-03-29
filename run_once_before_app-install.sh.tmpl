@@ -12,6 +12,13 @@ source "$(chezmoi source-path)/_utils.sh"
 sudo dnf install -y copyq tmux wl-clipboard \
     adobe-source-han-code-jp-fonts adobe-source-han-sans-jp-fonts
 
+# Create ~/.config/autostart/copyq.desktop
+copyq config autostart true
+
+if ! pgrep copyq > /dev/null ; then
+    copyq
+fi
+
 # https://github.com/eonpatapon/gnome-shell-extension-caffeine
 __install_remote_gnome_extension "caffeine@patapon.info"
 
