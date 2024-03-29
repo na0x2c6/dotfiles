@@ -12,5 +12,10 @@ function __install_remote_gnome_extension {
            --dest org.gnome.Shell.Extensions \
            --object-path /org/gnome/Shell/Extensions \
            --method org.gnome.Shell.Extensions.InstallRemoteExtension \
-           "$uuid"
+           "$uuid" || true
+
+    while [[ ! -e ~/.local/share/gnome-shell/extensions/$uuid ]] ; do
+        __message "waiting ..."
+        sleep 1
+    done
 }

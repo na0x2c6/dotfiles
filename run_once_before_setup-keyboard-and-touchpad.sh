@@ -28,13 +28,10 @@ if [[ ! -e ~/.cargo/bin/xremap ]] ; then
     cargo install xremap --features ${XDG_CURRENT_DESKTOP,,}
 fi
 
-__install_remote_gnome_extension "xremap@k0kubun.com" \
-    || true
+__install_remote_gnome_extension "xremap@k0kubun.com"
 
 # For 4 finger swipe
-__install_remote_gnome_extension "swap-finger-gestures-3-4@icedman.github.com" \
-    || true
-
+__install_remote_gnome_extension "swap-finger-gestures-3-4@icedman.github.com"
 # For ydotool
 if ! which ydotool > /dev/null ; then
     git clone --filter=blob:none https://github.com/ReimuNotMoe/ydotool.git ~/local/src/ydotool
