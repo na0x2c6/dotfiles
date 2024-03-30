@@ -68,7 +68,8 @@ keymap:
       only: [/terminal/]
     remap:
       Super-c: C-Shift-c
-      Super-v: C-Shift-v
+      Super-v: Shift-Insert
+      Super-Shift-v: Super-Shift-v
 
   - name: Gvim
     application:
@@ -77,3 +78,4 @@ keymap:
       Super-a: C-Shift-a
       Super-c: C-Shift-c
       Super-v: C-Shift-v
+      Super-Shift-v: Super-Shift-v
