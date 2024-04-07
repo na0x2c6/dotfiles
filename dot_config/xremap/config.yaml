@@ -43,8 +43,7 @@ keymap:
       # Deleting
       C-h: backspace
       C-d: delete
-      C-k: [Shift-end, C-x, { set_mark: false }]
-      C-y: [C-v, { set_mark: false }]
+      C-k: [Shift-end, delete, { set_mark: false }]
 
       Super-b: C-b
       Super-f: C-f
@@ -56,7 +55,6 @@ keymap:
 
       Super-d: C-d
       Super-k: C-k
-      Super-y: C-y
 
       Super-z: C-z
       Super-x: C-x
