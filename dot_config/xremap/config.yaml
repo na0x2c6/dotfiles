@@ -24,7 +24,10 @@ keymap:
       Super-Shift-v: Super-Shift-v
   - name: macOS like
     application:
-      not: [/terminal/, /Gvim/]
+      not:
+        - /terminal/
+        - /konsole/
+        - /gvim/
     remap:
       # Cursor
       C-b: { with_mark: left }
@@ -60,20 +63,19 @@ keymap:
       Super-x: C-x
       Super-c: C-c
       Super-v: C-v
-      Super-w: C-w
       Super-t: C-t
       Super-r: C-r
 
   - name: Teminal
     application:
-      only: [/terminal/]
+      only: [/terminal/, /konsole/]
     remap:
       Super-c: C-Shift-c
       Super-v: Shift-Insert
 
   - name: Gvim
     application:
-      only: [/Gvim/]
+      only: [/gvim/]
     remap:
       Super-a: C-Shift-a
       Super-c: C-Shift-c
