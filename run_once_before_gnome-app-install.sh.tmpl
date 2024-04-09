@@ -1,0 +1,15 @@
+#!/bin/bash
+
+set -Eeuv
+
+if [[ $(uname -s) != "Linux" ]] || [[ $XDG_CURRENT_DESKTOP != "GNOME" ]]  ; then
+    exit 0
+fi
+
+source "$(chezmoi source-path)/_utils.sh"
+
+# https://github.com/eonpatapon/gnome-shell-extension-caffeine
+__install_remote_gnome_extension "caffeine@patapon.info"
+
+# https://github.com/SUPERCILEX/gnome-clipboard-history
+__install_remote_gnome_extension "clipboard-history@alexsaveau.dev"

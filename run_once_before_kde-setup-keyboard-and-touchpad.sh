@@ -1,9 +1,8 @@
 #!/bin/bash
-# see: https://github.com/k0kubun/xremap
 
 set -Eeuv
 
-if [[ $(uname -s) != "Linux" ]] ; then
+if [[ $(uname -s) != "Linux" ]] || [[ $XDG_CURRENT_DESKTOP != "KDE" ]]  ; then
     exit 0
 fi
 
@@ -18,20 +17,16 @@ if [[ ! -e /etc/udev/rules.d/99-input.rules ]] ; then
     sudo udevadm control --reload-rules
 fi
 
-mkdir -p ~/.local/share/gnome-shell/extensions
 mkdir -p ~/local/src
 
 # For Xremap
+# https://github.com/k0kubun/xremap
 if [[ ! -e ~/.cargo/bin/xremap ]] ; then
     git clone https://github.com/k0kubun/xremap.git ~/local/src/xremap
     cd $_
-    cargo install xremap --features ${XDG_CURRENT_DESKTOP,,}
+    cargo install xremap --features kde
 fi
 
-__install_remote_gnome_extension "xremap@k0kubun.com"
-
-# For 4 finger swipe
-__install_remote_gnome_extension "swap-finger-gestures-3-4@icedman.github.com"
 # For ydotool
 if ! which ydotool > /dev/null ; then
     git clone --filter=blob:none https://github.com/ReimuNotMoe/ydotool.git ~/local/src/ydotool
