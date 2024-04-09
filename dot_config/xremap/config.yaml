@@ -19,9 +19,6 @@ modmap:
       LeftMeta: Alt_L
 
 keymap:
-  - name: Global
-    remap:
-      Super-Shift-v: Super-Shift-v
   - name: macOS like
     application:
       not:
@@ -62,16 +59,8 @@ keymap:
       Super-z: C-z
       Super-x: C-x
       Super-c: C-c
-      Super-v: C-v
       Super-t: C-t
       Super-r: C-r
-
-  - name: Teminal
-    application:
-      only: [/terminal/, /konsole/]
-    remap:
-      Super-c: C-Shift-c
-      Super-v: Shift-Insert
 
   - name: Gvim
     application:
