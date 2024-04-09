@@ -72,16 +72,14 @@ source ~/.powerlevel10k/powerlevel10k.zsh-theme
 
 export DOCKER_BUILDKIT=0
 
+export EDITOR='vim'
+export VISUAL='vim'
+
 {{ if eq .chezmoi.os "linux" }}
-alias vim=vimx
-export EDITOR='vimx'
-export VISUAL='vimx'
 export DOCKER_HOST=unix:///run/user/1000/podman/podman.sock
 {{ end }}
 
 {{ if eq .chezmoi.os "darwin" }}
-export EDITOR='vim'
-export VISUAL='vim'
 export PATH="/opt/homebrew/bin:$PATH"
 export MANPATH="/opt/homebrew/share/man:$MANPATH"
 {{ end }}

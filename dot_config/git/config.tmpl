@@ -3,20 +3,12 @@
 	email = {{ .email }}
 	signingkey = {{ .signingkey }}
 [core]
-{{ if eq .chezmoi.os "linux" }}
-	editor = vimx
-{{ else }}
 	editor = vim
-{{ end }}
 	quotepath = false
 	abbrev = 12
 	multiPackIndex = true
 [merge]
-{{ if eq .chezmoi.os "linux" }}
-	tool = vimx -d
-{{ else }}
 	tool = vimdiff
-{{ end }}
 	conflictstyle = zdiff3
 	log = true
 [mergetool]
