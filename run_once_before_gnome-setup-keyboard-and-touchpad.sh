@@ -23,7 +23,7 @@ fi
 # For Xremap
 # https://github.com/k0kubun/xremap
 if [[ ! -e ~/.cargo/bin/xremap ]] ; then
-    git clone https://github.com/k0kubun/xremap.git ~/local/src/xremap
+    git clone https://github.com/xremap/xremap.git ~/local/src/xremap
     cd $_
     cargo install xremap --features gnome
 fi
