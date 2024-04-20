@@ -6,7 +6,6 @@
 # To allow xremap to fetch the focused app name using D-Bus,
 # you need to enable the extension which is in:
 #    https://extensions.gnome.org/extension/5060/xremap/
-keypress_delay_ms: 10
 modmap:
   - name: Global
     remap:
@@ -20,12 +19,12 @@ modmap:
       LeftMeta: Alt_L
 
 keymap:
+  - name: Global
+    remap:
+      Super-Shift-v: Super-Shift-v
   - name: macOS like
     application:
-      not:
-        - /terminal/
-        - /konsole/
-        - /gvim/
+      not: [/terminal/, /Gvim/]
     remap:
       # Cursor
       C-b: { with_mark: left }
@@ -60,12 +59,21 @@ keymap:
       Super-z: C-z
       Super-x: C-x
       Super-c: C-c
+      Super-v: C-v
+      Super-w: C-w
       Super-t: C-t
       Super-r: C-r
 
+  - name: Teminal
+    application:
+      only: [/terminal/]
+    remap:
+      Super-c: C-Shift-c
+      Super-v: Shift-Insert
+
   - name: Gvim
     application:
-      only: [/gvim/]
+      only: [/Gvim/]
     remap:
       Super-a: C-Shift-a
       Super-c: C-Shift-c
