@@ -22,6 +22,7 @@ keymap:
   - name: Global
     remap:
       Super-Shift-v: Super-Shift-v
+      C-Esc: { escape_next_key: true }
   - name: macOS like
     application:
       not: [/terminal/, /Gvim/]
