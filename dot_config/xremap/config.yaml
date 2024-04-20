@@ -6,6 +6,10 @@
 # To allow xremap to fetch the focused app name using D-Bus,
 # you need to enable the extension which is in:
 #    https://extensions.gnome.org/extension/5060/xremap/
+shared:
+  terminals: &terminals
+    - "/terminal/"
+    - "/Gvim/"
 modmap:
   - name: Global
     remap:
@@ -25,7 +29,7 @@ keymap:
       C-Esc: { escape_next_key: true }
   - name: macOS like
     application:
-      not: [/terminal/, /Gvim/]
+      not: *terminals
     remap:
       # Cursor
       C-b: { with_mark: left }
@@ -41,11 +45,6 @@ keymap:
       C-a: { with_mark: home }
       C-e: { with_mark: end }
 
-      # Deleting
-      C-h: backspace
-      C-d: delete
-      C-k: [Shift-end, delete, { set_mark: false }]
-
       Super-b: C-b
       Super-f: C-f
       Super-p: C-p
@@ -54,9 +53,6 @@ keymap:
       Super-a: C-a
       Super-e: C-e
 
-      Super-d: C-d
-      Super-k: C-k
-
       Super-z: C-z
       Super-x: C-x
       Super-c: C-c
@@ -64,6 +60,18 @@ keymap:
       Super-w: C-w
       Super-t: C-t
       Super-r: C-r
+
+  - name: deleting like Emacs
+    application:
+      not: *terminals
+    exact_match: true
+    remap:
+      C-h: backspace
+      C-d: delete
+      C-k: [Shift-end, delete, { set_mark: false }]
+
+      Super-d: C-d
+      Super-k: C-k
 
   - name: Teminal
     application:
