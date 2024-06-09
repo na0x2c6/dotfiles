@@ -19,13 +19,14 @@ bindkey -e
 setopt clobber
 setopt hist_ignore_space
 setopt autopushd
-unsetopt share_history
+setopt share_history
 unsetopt multios
 unsetopt AUTO_REMOVE_SLASH
 bindkey \^U backward-kill-line
 
-SAVEHIST=3000
-HISTFILE=$HOME/.zsh_history
+export SAVEHIST=3000
+export HISTSIZE=3000
+export HISTFILE=$HOME/.zsh_history
 
 export GPG_TTY=$TTY
 
