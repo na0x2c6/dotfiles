@@ -77,7 +77,7 @@ export EDITOR='vim'
 export VISUAL='vim'
 
 {{ if eq .chezmoi.os "linux" }}
-export DOCKER_HOST=unix:///run/user/1000/podman/podman.sock
+export DOCKER_HOST=unix:///run/user/$UID/podman/podman.sock
 {{ end }}
 
 {{ if eq .chezmoi.os "darwin" }}
