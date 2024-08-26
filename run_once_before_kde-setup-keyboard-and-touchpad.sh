@@ -1,6 +1,6 @@
 #!/bin/bash
 
-set -Eeuv
+set -Eev
 
 if [[ $(uname -s) != "Linux" ]] || [[ $XDG_CURRENT_DESKTOP != "KDE" ]]  ; then
     exit 0

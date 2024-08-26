@@ -1,7 +1,25 @@
+{{- $classisType := "gui" }}
+{{- if contains "lima-" .chezmoi.hostname }}
+    {{- $classisType = "cli" }}
+{{- end }}
+
+LICENSE
+README.md
 _*.sh
 *.ini
 
-{{- if ne .chezmoi.os "linux" }}
+{{- if or (ne .chezmoi.os "linux") (ne $classisType "gui") }}
+.config/fusuma
+.config/gromit-mpx.cfg
 .config/systemd
 .config/xremap
-{{ end }}
+.var
+common-load-ydotool-service.sh
+desktop-common-installl.sh
+gnome-*
+common-load-xremap-service.sh
+common-load-fusuma-service.sh
+run_once_before_gnome-*
+run_once_before_kde-*
+run_onchange_gnome-*
+{{- end }}

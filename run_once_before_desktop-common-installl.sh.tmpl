@@ -1,0 +1,18 @@
+#!/bin/bash
+
+set -Eeuv
+
+
+if [[ $(uname -s) != "Linux" ]] ; then
+    exit 0
+fi
+
+if [[ $(hostname) =~ ^lima- ]] ; then
+    exit 0
+fi
+
+source "$(chezmoi source-path)/_utils.sh"
+
+sudo dnf install -y wl-clipboard adobe-source-han-code-jp-fonts adobe-source-han-sans-jp-fonts
+
+sudo flatpak install --system net.christianbeier.Gromit-MPX

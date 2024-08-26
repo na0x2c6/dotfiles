@@ -9,8 +9,7 @@ fi
 
 source "$(chezmoi source-path)/_utils.sh"
 
-sudo dnf install -y vim-enhanced tmux wl-clipboard zsh \
-    adobe-source-han-code-jp-fonts adobe-source-han-sans-jp-fonts
+sudo dnf install -y vim-enhanced tmux zsh
 
 if [[ ! -e ~/.powerlevel10k ]] ; then
     git clone --filter=blob:none https://github.com/romkatv/powerlevel10k.git ~/.powerlevel10k
@@ -29,7 +28,5 @@ if [[ ! -e ~/.fzf ]] ; then
     cd $_
     ./install --key-bindings --completion --no-update-rc
 fi
-
-sudo flatpak install --system net.christianbeier.Gromit-MPX
 
 sudo chsh $USER --shell /usr/bin/zsh
