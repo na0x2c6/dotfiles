@@ -79,6 +79,7 @@ set-option -g status-right "#[fg=white,bg=default]LA: #(LANG=C uptime | perl -nl
 # for clipboard
 {{- if contains "lima-" .chezmoi.hostname }}
 set -s set-clipboard on
+set -s allow-passthrough on
 {{- else if eq .chezmoi.os "linux" }}
 set-option -s copy-command "wl-copy"
 {{- else if eq .chezmoi.os "darwin" }}
