@@ -2,6 +2,7 @@
 Description=Starts fusuma user service
 After=graphical.target ydotoold.service
 Requires=ydotoold.service
+ConditionVirtualization=false
 
 [Service]
 Type=simple
