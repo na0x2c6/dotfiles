@@ -92,3 +92,8 @@ PATH="$PATH:/usr/sbin:/sbin"
 export PATH
 # Lima END
 {{- end }}
+
+# for drop-in
+find ~/.zsh.d/ -type f | grep -E '\.zsh$' | while read -r file ; do
+    [[ -r $file ]] && source "$file"
+done
