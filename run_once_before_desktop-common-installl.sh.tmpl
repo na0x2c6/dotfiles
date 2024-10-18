@@ -13,6 +13,8 @@ fi
 
 source "$(chezmoi source-path)/_utils.sh"
 
-sudo dnf install -y wl-clipboard adobe-source-han-code-jp-fonts adobe-source-han-sans-jp-fonts
+sudo dnf install -y wl-clipboard \
+    adobe-source-han-code-jp-fonts adobe-source-han-sans-jp-fonts \
+    vim-X11 shutter
 
 sudo flatpak install --system net.christianbeier.Gromit-MPX

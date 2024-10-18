@@ -9,7 +9,7 @@ fi
 
 source "$(chezmoi source-path)/_utils.sh"
 
-sudo dnf install -y vim-enhanced vim-X11 tmux zsh shutter
+sudo dnf install -y vim-enhanced tmux zsh
 
 if [[ ! -e ~/.powerlevel10k ]] ; then
     git clone --filter=blob:none https://github.com/romkatv/powerlevel10k.git ~/.powerlevel10k
