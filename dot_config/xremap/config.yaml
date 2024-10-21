@@ -90,7 +90,7 @@ keymap:
 
   - name: Chromium
     application:
-      only: chromium-browser
+      only: Chromium-browser
     remap:
       # for browsing history
       Super-y: C-h
