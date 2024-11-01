@@ -8,5 +8,8 @@ Type=simple
 ExecStart=%h/.cargo/bin/xremap --watch %h/.config/xremap/config.yaml
 Restart=on-failure
 
+# for debug
+# Environment=RUST_LOG=debug
+
 [Install]
 WantedBy=basic.target

@@ -88,9 +88,9 @@ keymap:
       Super-c: C-Shift-c
       Super-v: C-Shift-v
 
-  - name: Chromium
+  - name: Browser
     application:
-      only: Chromium-browser
+      only: [/browser/]
     remap:
       # for browsing history
       Super-y: C-h
