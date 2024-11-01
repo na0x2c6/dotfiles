@@ -37,6 +37,7 @@ if ! which ydotool > /dev/null ; then
     make -j $(nproc)
     sudo cp ydotool ydotoold /usr/local/bin/
     # Already managed by chezmoi but intentionally copied for updating
+    mkdir -p ~/.config/systemd/user/
     cp ydotoold.service ~/.config/systemd/user/
 fi
 

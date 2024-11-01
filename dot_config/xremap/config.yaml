@@ -10,6 +10,7 @@ shared:
   terminals: &terminals
     - "/terminal/"
     - "/Gvim/"
+    - "/Ptyxis/"
 modmap:
   - name: Global
     remap:
@@ -75,10 +76,10 @@ keymap:
 
   - name: Teminal
     application:
-      only: [/terminal/]
+      only: [/Ptyxis/]
     remap:
       Super-c: C-Shift-c
-      Super-v: Shift-Insert
+      Super-v: C-Shift-v
 
   - name: Gvim
     application:
