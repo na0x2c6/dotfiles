@@ -1,5 +1,6 @@
 [Unit]
 Description=Starts ydotoold user service
+ConditionVirtualization=false
 
 [Service]
 Type=simple
