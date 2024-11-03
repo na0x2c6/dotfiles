@@ -8,7 +8,7 @@
 #    https://extensions.gnome.org/extension/5060/xremap/
 shared:
   terminals: &terminals
-    - "/terminal/"
+    - "/(?i)terminal/"
     - "/Gvim/"
     - "/Ptyxis/"
 modmap:
@@ -76,7 +76,9 @@ keymap:
 
   - name: Teminal
     application:
-      only: [/Ptyxis/]
+      only:
+        - /(?i)terminal/
+        - /Ptyxis/
     remap:
       Super-c: C-Shift-c
       Super-v: C-Shift-v
