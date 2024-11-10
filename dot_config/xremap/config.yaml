@@ -93,7 +93,9 @@ keymap:
 
   - name: Browser
     application:
-      only: [/browser/]
+      only:
+        - /browser/
+        - /(?i)chrome/
     remap:
       # for browsing history
       Super-y: C-h
