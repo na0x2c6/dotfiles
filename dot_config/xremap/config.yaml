@@ -95,6 +95,7 @@ keymap:
     application:
       only:
         - /browser/
+        - /(?i)chromium/
         - /(?i)chrome/
     remap:
       # for browsing history
