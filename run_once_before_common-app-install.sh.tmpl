@@ -9,7 +9,7 @@ fi
 
 source "$(chezmoi source-path)/_utils.sh"
 
-sudo dnf install -y vim-enhanced tmux zsh
+sudo dnf install -y vim-enhanced emacs tmux zsh ripgrep global
 
 if [[ ! -e ~/.powerlevel10k ]] ; then
     git clone --filter=blob:none https://github.com/romkatv/powerlevel10k.git ~/.powerlevel10k
@@ -17,6 +17,10 @@ fi
 
 if [[ ! -e ~/.vim ]] ; then
     git clone {{ .vimrepo }} ~/.vim
+fi
+
+if [[ ! -e ~/.emacs.d ]] ; then
+    git clone {{ .emacsrepo }} ~/.emacs.d
 fi
 
 if ! which diff-highlight > /dev/null ; then

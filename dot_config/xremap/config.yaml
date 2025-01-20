@@ -11,10 +11,12 @@ shared:
     - "/(?i)terminal/"
     - "/Gvim/"
     - "/Ptyxis/"
+    - "/(?i)emacs/"
 modmap:
   - name: Global
     remap:
       CapsLock: LeftCtrl
+      Alt_R: Alt_L
 
   - name: AT Translated Set 2 keyboard
     device:
