@@ -9,8 +9,11 @@ fi
 
 source "$(chezmoi source-path)/_utils.sh"
 
-sudo dnf install -y vim-enhanced emacs tmux zsh ripgrep global cmigemo
+sudo dnf install -y vim-enhanced emacs tmux zsh \
+    ripgrep global cmigemo rust cargo
 sudo dnf group install -y c-development development-tools
+
+cargo install emacs-lsp-booster
 
 if [[ ! -e ~/.powerlevel10k ]] ; then
     git clone --filter=blob:none https://github.com/romkatv/powerlevel10k.git ~/.powerlevel10k
