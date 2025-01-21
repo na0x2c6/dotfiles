@@ -9,7 +9,8 @@ fi
 
 source "$(chezmoi source-path)/_utils.sh"
 
-sudo dnf install -y vim-enhanced emacs tmux zsh ripgrep global
+sudo dnf install -y vim-enhanced emacs tmux zsh ripgrep global cmigemo
+sudo dnf group install -y c-development development-tools
 
 if [[ ! -e ~/.powerlevel10k ]] ; then
     git clone --filter=blob:none https://github.com/romkatv/powerlevel10k.git ~/.powerlevel10k
