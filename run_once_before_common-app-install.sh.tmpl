@@ -10,7 +10,7 @@ fi
 source "$(chezmoi source-path)/_utils.sh"
 
 sudo dnf install -y vim-enhanced emacs tmux zsh \
-    ripgrep global cmigemo rust cargo
+    ripgrep global cmigemo rust cargo clang
 sudo dnf group install -y c-development development-tools
 
 cargo install emacs-lsp-booster
