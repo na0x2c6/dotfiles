@@ -20,6 +20,11 @@ if [[ ! -e /etc/udev/rules.d/99-input.rules ]] ; then
     sudo udevadm control --reload-rules
 fi
 
+if [[ ! -e /etc/modules-load.d/uinput.conf ]] ; then
+    echo 'uinput' | sudo tee /etc/modules-load.d/uinput.conf
+    sudo systemctl restart systemd-modules-load.service
+fi
+
 # For Xremap
 # https://github.com/k0kubun/xremap
 if [[ ! -e ~/.cargo/bin/xremap ]] ; then
