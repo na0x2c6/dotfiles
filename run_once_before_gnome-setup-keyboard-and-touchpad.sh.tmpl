@@ -9,7 +9,7 @@ fi
 mkdir -p ~/local/src
 mkdir -p ~/.local/share/gnome-shell/extensions
 
-source "$(chezmoi source-path)/_utils.sh"
+source "{{ .chezmoi.config.sourceDir }}/_utils.sh"
 
 sudo dnf -y install rust cargo ruby cmake scdoc
 sudo usermod -aG input $USER

@@ -11,7 +11,7 @@ if [[ $(hostname) =~ ^lima- ]] ; then
     exit 0
 fi
 
-source "$(chezmoi source-path)/_utils.sh"
+source "{{ .chezmoi.config.sourceDir }}/_utils.sh"
 
 sudo dnf install -y wl-clipboard \
     adobe-source-han-code-jp-fonts adobe-source-han-sans-jp-fonts \

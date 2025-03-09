@@ -6,7 +6,7 @@ if [[ $(uname -s) != "Linux" ]] || [[ $XDG_CURRENT_DESKTOP != "KDE" ]]  ; then
     exit 0
 fi
 
-source "$(chezmoi source-path)/_utils.sh"
+source "{{ .chezmoi.config.sourceDir }}/_utils.sh"
 
 sudo dnf -y install rust cargo ruby cmake scdoc
 sudo usermod -aG input $USER
