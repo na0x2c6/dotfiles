@@ -15,6 +15,8 @@ sudo dnf group install -y c-development development-tools
 
 cargo install emacs-lsp-booster
 
+systemctl --user enable --now podman.socket
+sudo loginctl enable-linger $USER
 
 COMPOSE_PATH=/usr/local/bin/docker-compose
 if [[ ! -x "$COMPOSE_PATH" ]] ; then
