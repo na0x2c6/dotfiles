@@ -10,10 +10,22 @@ fi
 source "{{ .chezmoi.config.sourceDir }}/_utils.sh"
 
 sudo dnf install -y vim-enhanced emacs tmux zsh \
-    ripgrep global cmigemo rust cargo clang
+    ripgrep global cmigemo rust cargo clang podman-docker
 sudo dnf group install -y c-development development-tools
 
 cargo install emacs-lsp-booster
+
+
+COMPOSE_PATH=/usr/local/bin/docker-compose
+if [[ ! -x "$COMPOSE_PATH" ]] ; then
+    TAG=$(curl -sD - https://github.com/docker/compose/releases/latest | tr -d '\r' | grep '^location' | grep -oE '[^/]+$')
+
+    [[ -n "$TAG" ]] || { echo "Failed to download docker-compose." ; exit 1; }
+
+    sudo curl -SL "https://github.com/docker/compose/releases/download/${TAG}/docker-compose-linux-$(uname -m)" -o $COMPOSE_PATH
+
+    sudo chmod +x $COMPOSE_PATH
+fi
 
 if [[ ! -e ~/.powerlevel10k ]] ; then
     git clone --filter=blob:none https://github.com/romkatv/powerlevel10k.git ~/.powerlevel10k
