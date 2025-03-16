@@ -1,0 +1,13 @@
+#!/bin/bash
+
+set -Eu
+
+DICT_DIR=/usr/share/cmigemo/utf-8/migemo-dict
+
+patterns=$(
+    for a in "$@" ; do
+        printf -- "-e %s\n" "$(cmigemo -w $a -d $DICT_DIR)"
+    done | tr '\n' ' '
+)
+
+git grep -nH -E $patterns

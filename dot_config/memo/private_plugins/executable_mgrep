@@ -1,0 +1,11 @@
+#!/bin/sh
+
+set -Eeu
+
+if [ "x$1" = "x-usage" ]; then
+  echo use git-mgrep in memo repo
+  exit
+fi
+
+git -C $MEMODIR mgrep "$@"
+

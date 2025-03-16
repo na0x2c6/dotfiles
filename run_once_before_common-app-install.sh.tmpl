@@ -10,7 +10,7 @@ fi
 source "{{ .chezmoi.config.sourceDir }}/_utils.sh"
 
 sudo dnf install -y vim-enhanced emacs tmux zsh \
-    ripgrep global cmigemo rust cargo clang podman-docker
+    ripgrep global cmigemo golang rust cargo clang podman-docker
 sudo dnf group install -y c-development development-tools
 
 cargo install emacs-lsp-booster
@@ -29,16 +29,37 @@ if [[ ! -x "$COMPOSE_PATH" ]] ; then
     sudo chmod +x $COMPOSE_PATH
 fi
 
+if [[ ! -x ~/go/bin/migemogrep ]] ; then
+    go install github.com/peco/migemogrep@master
+fi
+
+if [[ ! -x ~/go/bin/peco ]] ; then
+    [[ -e https://github.com/peco/peco.git ]] || git clone https://github.com/peco/peco.git \
+        ~/go/src/github.com/peco/peco
+
+    cd ~/go/src/github.com/peco/peco
+    make build
+    cp $(find ./releases -type f -perm /u+x | sort -r --version-sort) ~/go/bin/peco
+fi
+
+if [[ ! -x ~/go/bin/memo ]] ; then
+    go install github.com/mattn/memo@latest
+fi
+
 if [[ ! -e ~/.powerlevel10k ]] ; then
     git clone --filter=blob:none https://github.com/romkatv/powerlevel10k.git ~/.powerlevel10k
 fi
 
-if [[ ! -e ~/.vim ]] ; then
+if [[ -n "{{ .vimrepo }}" ]] && [[ ! -e ~/.vim ]] ; then
     git clone {{ .vimrepo }} ~/.vim
 fi
 
-if [[ ! -e ~/.emacs.d ]] ; then
+if [[ -n "{{ .emacsrepo }}" ]] && [[ ! -e ~/.emacs.d ]] ; then
     git clone {{ .emacsrepo }} ~/.emacs.d
+fi
+
+if [[ -n "{{ .memorepo }}" ]] && [[ ! -e ~/.config/memo/_memo ]] ; then
+    git clone {{ .memorepo }} ~/.config/memo/_memo
 fi
 
 if ! which diff-highlight > /dev/null ; then

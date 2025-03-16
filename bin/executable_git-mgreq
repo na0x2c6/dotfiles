@@ -1,0 +1,5 @@
+#!/bin/bash
+
+set -Eu
+
+git mgrep "$@" | peco --exec 'awk -F : '"'"'{print "+" $2 " " $1}'"'"' | xargs less '

@@ -1,0 +1,16 @@
+{
+    "CustomFilter": {
+        "Migemo": {
+            "Cmd": "migemogrep",
+            "Args": [ "$QUERY" ],
+            "BufferThreshold": 100
+        }
+    },
+    "InitialFilter": "Migemo",
+    "keymap": {
+        "C-j": "peco.SelectDown",
+        "C-k": "peco.SelectUp",
+        "C-f": "peco.ScrollPageDown",
+        "C-b": "peco.ScrollPageUp"
+    }
+}

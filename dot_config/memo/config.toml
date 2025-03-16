@@ -1,0 +1,11 @@
+memodir = "~/.config/memo/_memo"
+editor = "vim"
+column = 30
+width = 0
+selectcmd = "peco"
+grepcmd = "migemogrep -n -H ${PATTERN} ${FILES}"
+memotemplate = "~/.config/memo/template.txt"
+assetsdir = "."
+pluginsdir = "~/.config/memo/plugins"
+templatedirfile = ""
+templatebodyfile = ""

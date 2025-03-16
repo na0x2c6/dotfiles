@@ -3,6 +3,7 @@
 {{- $signingkey := promptStringOnce . "signingkey" "Signing key" -}}
 {{- $vimrepo := promptStringOnce . "vimrepo" "Vim repository" -}}
 {{- $emacsrepo := promptStringOnce . "emacsrepo" "Emacs repository" -}}
+{{- $memorepo := promptStringOnce . "memorepo" "Memo repository" -}}
 
 [data]
     gitname = {{ $gitname | quote }}
@@ -10,3 +11,4 @@
     signingkey = {{ $signingkey | quote }}
     vimrepo = {{ $vimrepo | quote }}
     emacsrepo = {{ $emacsrepo | quote }}
+    memorepo = {{ $memorepo | quote }}
