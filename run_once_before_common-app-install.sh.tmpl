@@ -72,4 +72,8 @@ if [[ ! -e ~/.fzf ]] ; then
     ./install --key-bindings --completion --no-update-rc
 fi
 
+if [[ ! -e ~/.tmux/plugins/tpm ]] ; then
+    git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
+fi
+
 sudo chsh $USER --shell /usr/bin/zsh

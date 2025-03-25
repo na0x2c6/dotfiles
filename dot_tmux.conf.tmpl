@@ -85,3 +85,13 @@ set-option -s copy-command "wl-copy"
 {{- else if eq .chezmoi.os "darwin" }}
 set-option -s copy-command "pbcopy"
 {{- end }}
+
+# plugins
+set -g @plugin 'tmux-plugins/tpm'
+set -g @plugin 'tmux-plugins/tmux-sensible'
+set -g @plugin 'fcsonline/tmux-thumbs'
+set -g @thumbs-key F
+
+run-shell 'sh -c "~/.tmux/plugins/tmux-thumbs/tmux-thumbs.tmux || true"'
+
+run '~/.tmux/plugins/tpm/tpm'
