@@ -103,9 +103,6 @@ bind -n M-k switch-client -p
 # plugins
 set -g @plugin 'tmux-plugins/tpm'
 set -g @plugin 'tmux-plugins/tmux-sensible'
-set -g @plugin 'fcsonline/tmux-thumbs'
-set -g @thumbs-key F
-
-run-shell 'sh -c "~/.tmux/plugins/tmux-thumbs/tmux-thumbs.tmux || true"'
+set -g @plugin 'Morantron/tmux-fingers'
 
 run '~/.tmux/plugins/tpm/tpm'
