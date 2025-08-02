@@ -18,17 +18,15 @@ bind v split-window -h
 bind s split-window -v
 
 # vim keybind
-bind h select-pane -L
-bind j select-pane -D
-bind k select-pane -U
-bind l select-pane -R
-bind -r C-h select-window -t :-
-bind -r C-l select-window -t :+
+bind -r h select-pane -L
+bind -r j select-pane -D
+bind -r k select-pane -U
+bind -r l select-pane -R
 
-bind < resize-pane -L 5
-bind - resize-pane -D 5
-bind + resize-pane -U 5
-bind > resize-pane -R 5
+bind -r < resize-pane -L 5
+bind -r - resize-pane -D 5
+bind -r + resize-pane -U 5
+bind -r > resize-pane -R 5
 
 bind S choose-tree -s
 
@@ -75,7 +73,6 @@ set -g message-command-style fg=cyan,bg=brightblack
 set-option -g status-position bottom
 set-option -g status-right-length 140
 set-option -g status-right "#[fg=white,bg=default]LA: #(LANG=C uptime | perl -nlae 'print join(\" \", @F[-3..-1])')"
-set-option -g status-left "#S:"
 
 # for clipboard
 {{- if contains "lima-" .chezmoi.hostname }}
@@ -90,7 +87,9 @@ set-option -s copy-command "pbcopy"
 # window
 bind -n M-c new-window -c "#{pane_current_path}"
 bind -n M-l next-window
+bind -r n next-window
 bind -n M-h previous-window
+bind -r p previous-window
 
 bind -n M-v split-window -h -c "#{pane_current_path}"
 bind -n M-s split-window -v -c "#{pane_current_path}"
@@ -98,7 +97,9 @@ bind -n M-s split-window -v -c "#{pane_current_path}"
 # session
 bind -n M-C new-session
 bind -n M-j switch-client -n
+bind -r ) switch-client -n
 bind -n M-k switch-client -p
+bind -r ( switch-client -p
 
 # plugins
 set -g @plugin 'tmux-plugins/tpm'
