@@ -75,6 +75,7 @@ set -g message-command-style fg=cyan,bg=brightblack
 set-option -g status-position bottom
 set-option -g status-right-length 140
 set-option -g status-right "#[fg=white,bg=default]LA: #(LANG=C uptime | perl -nlae 'print join(\" \", @F[-3..-1])')"
+set-option -g status-left "#S:"
 
 # for clipboard
 {{- if contains "lima-" .chezmoi.hostname }}
@@ -85,6 +86,19 @@ set-option -s copy-command "wl-copy"
 {{- else if eq .chezmoi.os "darwin" }}
 set-option -s copy-command "pbcopy"
 {{- end }}
+
+# window
+bind -n M-c new-window -c "#{pane_current_path}"
+bind -n M-l next-window
+bind -n M-h previous-window
+
+bind -n M-v split-window -h -c "#{pane_current_path}"
+bind -n M-s split-window -v -c "#{pane_current_path}"
+
+# session
+bind -n M-C new-session
+bind -n M-j switch-client -n
+bind -n M-k switch-client -p
 
 # plugins
 set -g @plugin 'tmux-plugins/tpm'
