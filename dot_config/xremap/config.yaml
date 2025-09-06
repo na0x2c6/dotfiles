@@ -9,7 +9,7 @@
 shared:
   terminals: &terminals
     - "/(?i)terminal/"
-    - "/Gvim/"
+    - "/(?i)gvim/"
     - "/Ptyxis/"
     - "/(?i)emacs/"
 modmap:
@@ -87,7 +87,7 @@ keymap:
 
   - name: Gvim
     application:
-      only: [/Gvim/]
+      only: [ "/(?i)gvim/"]
     remap:
       Super-a: C-Shift-a
       Super-c: C-Shift-c
