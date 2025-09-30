@@ -6,6 +6,7 @@
 # To allow xremap to fetch the focused app name using D-Bus,
 # you need to enable the extension which is in:
 #    https://extensions.gnome.org/extension/5060/xremap/
+keypress_delay_ms: 10
 shared:
   terminals: &terminals
     - "/(?i)terminal/"
