@@ -1,15 +1,16 @@
 [Unit]
-Description=Xremap service with user configuration
-After=graphical-session.target
-BindsTo=graphical-session.target
+Description=Xremap
+After=default.target
 
 [Service]
 Type=simple
 ExecStart=%h/.cargo/bin/xremap --watch %h/.config/xremap/config.yaml
-Restart=on-failure
+Restart=always
+StandardOutput=journal
+StandardError=journal
 
 # for debug
 # Environment=RUST_LOG=debug
 
 [Install]
-WantedBy=basic.target
+WantedBy=default.target
