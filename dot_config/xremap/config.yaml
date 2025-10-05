@@ -55,7 +55,6 @@ keymap:
       Super-n: C-n
 
       Super-a: C-a
-      Super-e: C-e
 
       Super-z: C-z
       Super-x: C-x
