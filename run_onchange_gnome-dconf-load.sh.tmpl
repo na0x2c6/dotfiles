@@ -18,5 +18,8 @@ dconf load /org/gnome/settings-daemon/plugins/media-keys/ < {{ joinPath .chezmoi
 # hash: {{ include "dconf-org-gnome-dektop-interface.ini" | sha256sum }}
 dconf load /org/gnome/desktop/interface/ < {{ joinPath .chezmoi.sourceDir "dconf-org-gnome-dektop-interface.ini" | quote }}
 
-# hash: {{ include "dconf-org-gnome-terminal-legacy-keybindings.ini" | sha256sum }}
-dconf load /org/gnome/terminal/legacy/keybindings/ < {{ joinPath .chezmoi.sourceDir "dconf-org-gnome-terminal-legacy-keybindings.ini" | quote }}
+# hash: {{ include "dconf-org-gnome-terminal-legacy.ini" | sha256sum }}
+dconf load /org/gnome/terminal/legacy/ < {{ joinPath .chezmoi.sourceDir "dconf-org-gnome-terminal-legacy.ini" | quote }}
+
+# hash: {{ include "dconf-org-gnome-mutter.ini" | sha256sum }}
+dconf load /org/gnome/mutter/ < {{ joinPath .chezmoi.sourceDir "dconf-org-gnome-mutter.ini" | quote }}
