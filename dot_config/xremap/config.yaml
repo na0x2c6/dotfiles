@@ -64,6 +64,8 @@ keymap:
       Super-w: C-w
       Super-t: C-t
       Super-r: C-r
+      Super-LeftBrace: Alt_L-Left
+      Super-RightBrace: Alt_L-Right
 
   - name: deleting like Emacs
     application:
