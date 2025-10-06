@@ -13,6 +13,7 @@ shared:
     - "/(?i)gvim/"
     - "/Ptyxis/"
     - "/(?i)emacs/"
+    - '/org\.gnome\.Connections/'
 modmap:
   - name: Global
     remap:
