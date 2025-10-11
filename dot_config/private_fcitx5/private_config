@@ -24,10 +24,10 @@ ModifierOnlyKeyTimeout=250
 0=Shift+Super+space
 
 [Hotkey/ActivateKeys]
-0=Super_R
+0=Hangul_Hanja
 
 [Hotkey/DeactivateKeys]
-0=Super_L
+0=Hangul_Romaja
 
 [Hotkey/PrevPage]
 0=Up
