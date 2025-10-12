@@ -32,6 +32,7 @@ keymap:
     remap:
       Super-Shift-v: Super-Shift-v
       C-Esc: { escape_next_key: true }
+      C-Space: Alt-Space
   - name: macOS like
     application:
       not: *terminals

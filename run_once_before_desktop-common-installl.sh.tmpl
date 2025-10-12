@@ -15,12 +15,6 @@ source "{{ .chezmoi.config.sourceDir }}/_utils.sh"
 
 sudo dnf install -y wl-clipboard \
     adobe-source-han-code-jp-fonts adobe-source-han-sans-jp-fonts \
-    vim-X11 shutter fcitx5-mozc fcitx5-autostart
+    vim-X11 shutter
 
 sudo flatpak install --system net.christianbeier.Gromit-MPX
-
-mkdir -p ~/.config/autostart
-
-if [[ ! -e ~/.config/autostart/org.fcitx.Fcitx5.desktop ]] ; then
-    cp /usr/share/applications/org.fcitx.Fcitx5.desktop ~/.config/autostart
-fi

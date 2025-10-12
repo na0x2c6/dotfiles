@@ -10,8 +10,7 @@ fi
 source "{{ .chezmoi.config.sourceDir }}/_utils.sh"
 
 sudo dnf install -y vim-enhanced emacs tmux zsh \
-    ripgrep global cmigemo golang rust cargo clang podman-docker \
-    fcitx5-mozc
+    ripgrep global cmigemo golang rust cargo clang podman-docker
 sudo dnf group install -y c-development development-tools
 
 cargo install emacs-lsp-booster
@@ -78,6 +77,3 @@ if [[ ! -e ~/.tmux/plugins/tpm ]] ; then
 fi
 
 sudo chsh $USER --shell /usr/bin/zsh
-
-mkdir -p ~/.config/autostart
-cp /usr/share/applications/org.fcitx.Fcitx5.desktop ~/.config/autostart
