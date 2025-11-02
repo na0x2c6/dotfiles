@@ -29,6 +29,7 @@ bind -r + resize-pane -U 5
 bind -r > resize-pane -R 5
 
 bind S choose-tree -s
+bind J choose-tree -Z -w "join-pane -t '%%'"
 
 # for mouse
 setw -g mode-keys vi
