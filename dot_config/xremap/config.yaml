@@ -24,6 +24,7 @@ modmap:
       only: 'AT Translated Set 2 keyboard'
     remap:
       Alt_L: LeftMeta
+      LeftMeta: Alt_L
 
 keymap:
   - name: Global
