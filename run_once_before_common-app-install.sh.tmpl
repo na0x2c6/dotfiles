@@ -9,11 +9,9 @@ fi
 
 source "{{ .chezmoi.config.sourceDir }}/_utils.sh"
 
-sudo dnf install -y vim-enhanced emacs tmux zsh \
+sudo dnf install -y vim-enhanced tmux zsh \
     ripgrep global cmigemo golang rust cargo clang podman-docker
 sudo dnf group install -y c-development development-tools
-
-cargo install emacs-lsp-booster
 
 systemctl --user enable --now podman.socket
 sudo loginctl enable-linger $USER
@@ -52,10 +50,6 @@ fi
 
 if [[ -n "{{ .vimrepo }}" ]] && [[ ! -e ~/.vim ]] ; then
     git clone {{ .vimrepo }} ~/.vim
-fi
-
-if [[ -n "{{ .emacsrepo }}" ]] && [[ ! -e ~/.emacs.d ]] ; then
-    git clone {{ .emacsrepo }} ~/.emacs.d
 fi
 
 if [[ -n "{{ .memorepo }}" ]] && [[ ! -e ~/.config/memo/_memo ]] ; then
