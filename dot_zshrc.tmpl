@@ -74,10 +74,21 @@ source ~/.powerlevel10k/powerlevel10k.zsh-theme
 export DOCKER_BUILDKIT=0
 
 {{ if eq .chezmoi.os "linux" }}
+export DOCKER_HOST=unix:///run/user/$UID/podman/podman.sock
+{{ end }}
+
+{{ if and (eq .chezmoi.os "linux") (not (contains "lima-" .chezmoi.hostname)) }}
 alias vim=vimx
 export EDITOR='vimx'
 export VISUAL='vimx'
-export DOCKER_HOST=unix:///run/user/$UID/podman/podman.sock
+{{ end }}
+
+{{ if and (eq .chezmoi.os "linux") (contains "lima-" .chezmoi.hostname) }}
+alias open=xdg-open
+alias pbcopy=wl-copy
+alias pbpaste=wl-paste
+export EDITOR='vim'
+export VISUAL='vim'
 {{ end }}
 
 {{ if eq .chezmoi.os "darwin" }}

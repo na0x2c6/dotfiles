@@ -1,0 +1,96 @@
+#!/bin/bash
+
+SOCKET="/run/user/${UID}/host-exec.sock"
+
+SELECTION="primary"
+MODE=""
+VERBOSE=0
+
+while [[ $# -gt 0 ]]; do
+    case "$1" in
+        -p|--primary)   SELECTION="primary"; shift ;;
+        -s|--secondary) SELECTION="secondary"; shift ;;
+        -b|--clipboard) SELECTION="clipboard"; shift ;;
+        -i|--input)     MODE="input"; shift ;;
+        -o|--output)    MODE="output"; shift ;;
+        -a|--append)    MODE="append"; shift ;;
+        -f|--follow)    MODE="follow"; shift ;;
+        -c|--clear)     MODE="clear"; shift ;;
+        -d|--delete)    MODE="delete"; shift ;;
+        -k|--keep)      shift ;;  # ignore
+        -x|--exchange)  MODE="exchange"; shift ;;
+        -t|--selectionTimeout) shift 2 ;;  # ignore
+        -l|--logfile)   shift 2 ;;
+        -n|--nodetach)  shift ;;
+        -v|--verbose)   VERBOSE=1; shift ;;
+        -h|--help)
+            cat <<'EOF'
+Usage: xsel [options]
+  -i, --input      read stdin into selection
+  -o, --output     write selection to stdout
+  -a, --append     append stdin to selection
+  -f, --follow     follow stdin like tail -f
+  -c, --clear      clear selection
+  -d, --delete     request deletion from source
+  -p, --primary    use PRIMARY selection (default)
+  -s, --secondary  use SECONDARY selection
+  -b, --clipboard  use CLIPBOARD selection
+  -k, --keep       keep selection persistent
+  -x, --exchange   exchange PRIMARY and SECONDARY
+  -v, --verbose    verbose output
+  -h, --help       show this help
+EOF
+            exit 0
+            ;;
+        --version)
+            echo "xsel (lima-host-exec wrapper)"
+            exit 0
+            ;;
+        *)
+            shift ;;
+    esac
+done
+
+if [[ -z "$MODE" ]]; then
+    if [[ -t 0 && -t 1 ]]; then
+        MODE="output"
+    elif [[ ! -t 0 ]]; then
+        MODE="input"
+    else
+        MODE="output"
+    fi
+fi
+
+[[ $VERBOSE -eq 1 ]] && echo "xsel: mode=$MODE selection=$SELECTION" >&2
+
+case "$MODE" in
+    input)
+        {
+          echo "pbcopy"
+          cat
+        } | socat - UNIX-CONNECT:"$SOCKET"
+        ;;
+    append)
+        {
+          echo "{ pbpaste; cat; } | pbcopy"
+          cat
+        } | socat - UNIX-CONNECT:"$SOCKET"
+        ;;
+    follow)
+        # like `tail -f`
+        {
+            echo 'while IFS= read -r line; do { pbpaste; echo "$line"; } | pbcopy; done'
+            cat
+        } | socat - UNIX-CONNECT:"$SOCKET"
+        ;;
+    output)
+        echo "pbpaste" | socat - UNIX-CONNECT:"$SOCKET"
+        ;;
+    clear|delete)
+        echo "pbcopy < /dev/null" | socat - UNIX-CONNECT:"$SOCKET"
+        ;;
+    exchange)
+        echo "xsel: --exchange not supported (macOS has no secondary selection)" >&2
+        exit 1
+        ;;
+esac

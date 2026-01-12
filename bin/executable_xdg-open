@@ -1,0 +1,5 @@
+#!/bin/bash
+
+SOCKET="/run/user/${UID}/host-exec.sock"
+
+echo "open '$1'" | socat - UNIX-CONNECT:"$SOCKET"

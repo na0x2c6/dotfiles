@@ -1,6 +1,6 @@
 {{- $classisType := "gui" }}
 {{- if contains "lima-" .chezmoi.hostname }}
-    {{- $classisType = "cli" }}
+    {{- $classisType = "lima" }}
 {{- end }}
 
 LICENSE
@@ -22,4 +22,12 @@ common-load-fusuma-service.sh
 run_once_before_gnome-*
 run_once_before_kde-*
 run_onchange_gnome-*
+{{- end }}
+
+{{- if (eq $classisType "lima") }}
+bin/_exec-host
+bin/wl-copy
+bin/wl-paste
+bin/xdg-open
+bin/xsel
 {{- end }}

@@ -1,0 +1,4 @@
+#!/bin/bash
+
+SOCKET="/run/user/${UID}/host-exec.sock"
+echo "pbpaste" | socat - UNIX-CONNECT:"$SOCKET"

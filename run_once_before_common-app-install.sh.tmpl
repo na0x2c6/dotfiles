@@ -10,7 +10,8 @@ fi
 source "{{ .chezmoi.config.sourceDir }}/_utils.sh"
 
 sudo dnf install -y vim-enhanced tmux zsh \
-    ripgrep global cmigemo golang rust cargo clang podman-docker
+    ripgrep global cmigemo golang rust cargo clang podman-docker \
+    socat
 sudo dnf group install -y c-development development-tools
 
 systemctl --user enable --now podman.socket

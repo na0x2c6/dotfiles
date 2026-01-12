@@ -1,0 +1,29 @@
+<!-- For Lima on macOS: save to ~/Library/LaunchAgents/io.lima-vm.host-exec.plist, then run: launchctl bootstrap gui/$(id -u) ~/Library/LaunchAgents/io.lima-vm.host-exec.plist -->
+<!-- Don't forget replace `USER_NAME` -->
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>Label</key>
+    <string>io.lima-vm.host-exec</string>
+    <key>ProgramArguments</key>
+    <array>
+        <string>/bin/bash</string>
+    </array>
+    <key>Sockets</key>
+    <dict>
+        <key>Listeners</key>
+        <dict>
+            <key>SockPathName</key>
+            <string>/Users/USER_NAME/.lima/default/sock/host-exec.sock</string>
+            <key>SockPathMode</key>
+            <integer>384</integer>
+        </dict>
+    </dict>
+    <key>inetdCompatibility</key>
+    <dict>
+        <key>Wait</key>
+        <false/>
+    </dict>
+</dict>
+</plist>

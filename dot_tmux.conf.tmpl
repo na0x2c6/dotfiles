@@ -76,10 +76,7 @@ set-option -g status-right-length 140
 set-option -g status-right "#[fg=white,bg=default]LA: #(LANG=C uptime | perl -nlae 'print join(\" \", @F[-3..-1])')"
 
 # for clipboard
-{{- if contains "lima-" .chezmoi.hostname }}
-set -s set-clipboard on
-set -s allow-passthrough on
-{{- else if eq .chezmoi.os "linux" }}
+{{- if eq .chezmoi.os "linux" }}
 set-option -s copy-command "wl-copy"
 {{- else if eq .chezmoi.os "darwin" }}
 set-option -s copy-command "pbcopy"

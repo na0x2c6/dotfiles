@@ -1,0 +1,8 @@
+#!/bin/bash
+
+SOCKET="/run/user/${UID}/host-exec.sock"
+
+{
+    echo "pbcopy"
+    cat
+} | socat - UNIX-CONNECT:"$SOCKET"
