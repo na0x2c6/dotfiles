@@ -1,0 +1,105 @@
+#!/bin/bash
+
+SOCKET="/run/user/${UID}/host-exec.sock"
+
+SELECTION="primary"
+MODE="input"
+FILTER=0
+RMLASTNL=0
+VERBOSE=0
+SILENT=0
+FILES=()
+
+while [[ $# -gt 0 ]]; do
+    case "$1" in
+        -i|-in)              MODE="input"; shift ;;
+        -o|-out)             MODE="output"; shift ;;
+        -f|-filter)          FILTER=1; shift ;;
+        -r|-rmlastnl)        RMLASTNL=1; shift ;;
+        -l|-loops)           shift 2 ;;  # ignore
+        -d|-display|-disp)   shift 2 ;;  # ignore
+        -sel|-selection)
+            case "$2" in
+                p|primary)     SELECTION="primary" ;;
+                s|sec|secondary) SELECTION="secondary" ;;
+                c|clip|clipboard) SELECTION="clipboard" ;;
+                b|buffer)      SELECTION="primary" ;;  # fallback
+                *)             SELECTION="$2" ;;
+            esac
+            shift 2
+            ;;
+        -t|-target)          shift 2 ;;  # ignore
+        -noutf8)             shift ;;    # ignore
+        -sensitive)          shift ;;    # ignore (macOS clipboard doesn't support)
+        -wait)               shift 2 ;;  # ignore
+        -silent)             SILENT=1; shift ;;
+        -quiet)              shift ;;    # ignore
+        -verbose)            VERBOSE=1; shift ;;
+        -version)
+            echo "xclip (lima-host-exec wrapper)"
+            exit 0
+            ;;
+        -h|-help)
+            cat <<'EOF'
+Usage: xclip [options] [files]
+  -i, -in           read stdin/files into selection (default)
+  -o, -out          write selection to stdout
+  -f, -filter       copy stdin to stdout as well as selection
+  -r, -rmlastnl     remove last newline from input
+  -l, -loops N      exit after N pastes (ignored)
+  -d, -display      X display to use (ignored)
+  -selection SEL    selection: primary(p)/secondary(s,sec)/clipboard(c,clip)
+  -t, -target       target atom (ignored)
+  -noutf8           legacy mode (ignored)
+  -sensitive        clear after one paste (ignored)
+  -wait N           clear after N ms (ignored)
+  -silent           suppress errors
+  -quiet            suppress foreground messages (ignored)
+  -verbose          verbose output
+  -version          show version
+  -h, -help         show this help
+EOF
+            exit 0
+            ;;
+        -*)
+            if [[ "$1" == "-v" ]]; then
+                FILES+=("$1")
+            elif [[ $SILENT -eq 0 ]]; then
+                echo "xclip: unrecognized option: $1" >&2
+            fi
+            shift
+            ;;
+        *)
+            FILES+=("$1")
+            shift
+            ;;
+    esac
+done
+
+[[ $VERBOSE -eq 1 ]] && echo "xclip: mode=$MODE selection=$SELECTION filter=$FILTER files=${FILES[*]}" >&2
+
+case "$MODE" in
+    input)
+        if [[ ${#FILES[@]} -gt 0 ]]; then
+            INPUT=$(cat "${FILES[@]}" 2>/dev/null)
+        else
+            INPUT=$(cat)
+        fi
+
+        if [[ $RMLASTNL -eq 1 ]]; then
+            INPUT="${INPUT%$'\n'}"
+        fi
+
+        if [[ $FILTER -eq 1 ]]; then
+            printf '%s' "$INPUT"
+        fi
+
+        {
+            echo "pbcopy"
+            printf '%s' "$INPUT"
+        } | socat - UNIX-CONNECT:"$SOCKET"
+        ;;
+    output)
+        echo "pbpaste" | socat - UNIX-CONNECT:"$SOCKET"
+        ;;
+esac
