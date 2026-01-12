@@ -39,7 +39,7 @@ fpath=(~/.config/zsh/completions $fpath)
 zle -N edit-command-line
 bindkey '^X^e' edit-command-line
 
-export PATH="$HOME/bin:$HOME/local/bin:$HOME/go/bin:$PATH"
+export PATH="$HOME/bin:$HOME/local/bin:$HOME/.local/bin:$HOME/go/bin:$PATH"
 
 if [[ -e ~/.rbenv ]] ; then
   eval "$(~/.rbenv/bin/rbenv init - zsh)"
