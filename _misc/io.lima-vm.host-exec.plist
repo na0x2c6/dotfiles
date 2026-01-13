@@ -10,6 +10,11 @@
     <array>
         <string>/bin/bash</string>
     </array>
+    <key>EnvironmentVariables</key>
+    <dict>
+        <key>LANG</key>
+        <string>ja_JP.UTF-8</string>
+    </dict>
     <key>Sockets</key>
     <dict>
         <key>Listeners</key>

@@ -24,7 +24,7 @@ run_once_before_kde-*
 run_onchange_gnome-*
 {{- end }}
 
-{{- if (eq $classisType "lima") }}
+{{- if (ne $classisType "lima") }}
 bin/_exec-host
 bin/wl-copy
 bin/wl-paste
