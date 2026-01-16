@@ -2,7 +2,57 @@
 
 SOCKET="/run/user/${UID}/host-exec.sock"
 
+CLEAR=false
+TRIM_NEWLINE=false
+
+while [[ $# -gt 0 ]]; do
+    case "$1" in
+        -c|--clear)
+            CLEAR=true
+            shift
+            ;;
+        -n|--trim-newline)
+            TRIM_NEWLINE=true
+            shift
+            ;;
+        -p|--primary|-o|--once|-f|--foreground)
+            shift
+            ;;
+        -t|--type|-s|--seat)
+            shift 2
+            ;;
+        -h|--help|-v|--version)
+            shift
+            ;;
+        --)
+            shift
+            break
+            ;;
+        -*)
+            shift
+            ;;
+        *)
+            break
+            ;;
+    esac
+done
+
+if $CLEAR; then
+    printf '' | socat - UNIX-CONNECT:"$SOCKET" <<< "pbcopy"
+    exit 0
+fi
+
+if [[ $# -gt 0 ]]; then
+    INPUT="$*"
+else
+    INPUT=$(cat)
+fi
+
+if $TRIM_NEWLINE; then
+    INPUT="${INPUT%$'\n'}"
+fi
+
 {
     echo "pbcopy"
-    cat
+    printf '%s' "$INPUT"
 } | socat - UNIX-CONNECT:"$SOCKET"
