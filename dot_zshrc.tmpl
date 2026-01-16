@@ -89,6 +89,7 @@ alias pbcopy=wl-copy
 alias pbpaste=wl-paste
 export EDITOR='vim'
 export VISUAL='vim'
+export SSH_AUTH_SOCK="$XDG_RUNTIME_DIR/ssh-agent.socket"
 {{ end }}
 
 {{ if eq .chezmoi.os "darwin" }}
