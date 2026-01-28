@@ -1,0 +1,25 @@
+--recurse=yes
+--tag-relative=yes
+--fields=+ailmnS
+
+--exclude=node_modules
+--exclude=vendor
+--exclude=.git
+--exclude=dist
+--exclude=build
+--exclude=.next
+--exclude=*.min.js
+--exclude=*.min.css
+
+# TypeScript / JavaScript
+--languages=+TypeScript
+--map-TypeScript=+.ts
+--map-TypeScript=+.tsx
+--map-JavaScript=+.js
+--map-JavaScript=+.jsx
+
+# PHP
+--php-kinds=+cdfint
+
+# Go
+--go-kinds=+fmptv
