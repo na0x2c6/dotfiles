@@ -1,7 +1,16 @@
 #!/bin/bash
 
-SOCKET="/run/user/${UID}/host-exec.sock"
+if [ -z "$HOST_OS" ]; then
+  HOST_OS="$(_exec-host uname -s 2>/dev/null < /dev/null | tr '[:upper:]' '[:lower:]')"
+  export HOST_OS
+fi
 
+if [[ "$HOST_OS" == "linux" ]]; then
+    _exec-host wl-copy "$@"
+    exit $?
+fi
+
+### for macOS
 CLEAR=false
 TRIM_NEWLINE=false
 
@@ -38,21 +47,21 @@ while [[ $# -gt 0 ]]; do
 done
 
 if $CLEAR; then
-    printf '' | socat - UNIX-CONNECT:"$SOCKET" <<< "pbcopy"
+    echo -n | _exec-host pbcopy
     exit 0
 fi
 
 if [[ $# -gt 0 ]]; then
-    INPUT="$*"
+    if $TRIM_NEWLINE; then
+        printf '%s' "$*" | _exec-host pbcopy
+    else
+        echo "$*" | _exec-host pbcopy
+    fi
 else
-    INPUT=$(cat)
+    if $TRIM_NEWLINE; then
+        INPUT=$(cat)
+        printf '%s' "${INPUT%$'\n'}" | _exec-host pbcopy
+    else
+        _exec-host pbcopy
+    fi
 fi
-
-if $TRIM_NEWLINE; then
-    INPUT="${INPUT%$'\n'}"
-fi
-
-{
-    echo "pbcopy"
-    printf '%s' "$INPUT"
-} | socat - UNIX-CONNECT:"$SOCKET"

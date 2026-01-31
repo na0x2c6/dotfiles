@@ -160,8 +160,17 @@ case "$MODE" in
         ;;
 esac{{- end }}{{- if and (eq .chezmoi.os "linux") (contains "lima-" .chezmoi.hostname) }}#!/bin/bash
 
-SOCKET="/run/user/${UID}/host-exec.sock"
+if [ -z "$HOST_OS" ]; then
+  HOST_OS="$(_exec-host uname -s 2>/dev/null < /dev/null | tr '[:upper:]' '[:lower:]')"
+  export HOST_OS
+fi
 
+if [[ "$HOST_OS" == "linux" ]]; then
+    _exec-host xsel "$@"
+    exit $?
+fi
+
+### for macOS
 SELECTION="primary"
 MODE=""
 VERBOSE=0
@@ -203,7 +212,7 @@ EOF
             exit 0
             ;;
         --version)
-            echo "xsel (lima-host-exec wrapper)"
+            echo "xsel (_exec-host wrapper)"
             exit 0
             ;;
         *)
@@ -221,33 +230,25 @@ if [[ -z "$MODE" ]]; then
     fi
 fi
 
-[[ $VERBOSE -eq 1 ]] && echo "xsel: mode=$MODE selection=$SELECTION" >&2
+[[ $VERBOSE -eq 1 ]] && echo "xsel: mode=$MODE selection=$SELECTION host=$HOST_OS" >&2
 
 case "$MODE" in
     input)
-        {
-          echo "pbcopy"
-          cat
-        } | socat - UNIX-CONNECT:"$SOCKET"
+        cat | _exec-host pbcopy
         ;;
     append)
-        {
-          echo "{ pbpaste; cat; } | pbcopy"
-          cat
-        } | socat - UNIX-CONNECT:"$SOCKET"
+        { _exec-host pbpaste; cat; } | _exec-host pbcopy
         ;;
     follow)
-        # like `tail -f`
-        {
-            echo 'while IFS= read -r line; do { pbpaste; echo "$line"; } | pbcopy; done'
-            cat
-        } | socat - UNIX-CONNECT:"$SOCKET"
+        while IFS= read -r line; do
+            { _exec-host pbpaste; echo "$line"; } | _exec-host pbcopy
+        done
         ;;
     output)
-        echo "pbpaste" | socat - UNIX-CONNECT:"$SOCKET"
+        _exec-host pbpaste
         ;;
     clear|delete)
-        echo "pbcopy < /dev/null" | socat - UNIX-CONNECT:"$SOCKET"
+        echo -n | _exec-host pbcopy
         ;;
     exchange)
         echo "xsel: --exchange not supported (macOS has no secondary selection)" >&2

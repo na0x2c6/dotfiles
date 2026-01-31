@@ -1,16 +1,16 @@
 #!/bin/bash
 
-SOCKET="/run/user/${UID}/host-exec.sock"
+SOCAT_TARGET="${HOST_EXEC_TARGET:-UNIX-CONNECT:/run/user/${UID}/host-exec.sock}"
 
 if [ $# -eq 0 ]; then
-    socat - UNIX-CONNECT:"$SOCKET"
+    socat - "$SOCAT_TARGET"
 else
     if [ -t 0 ]; then
-        echo "$*" | socat - UNIX-CONNECT:"$SOCKET"
+        echo "$*" | socat - "$SOCAT_TARGET"
     else
         {
             echo "$*"
             cat
-        } | socat - UNIX-CONNECT:"$SOCKET"
+        } | socat - "$SOCAT_TARGET"
     fi
 fi

@@ -1,7 +1,17 @@
 #!/bin/bash
 
-SOCKET="/run/user/${UID}/host-exec.sock"
+if [ -z "$HOST_OS" ]; then
+  HOST_OS="$(_exec-host uname -s 2>/dev/null < /dev/null | tr '[:upper:]' '[:lower:]')"
+  export HOST_OS
+fi
 
+# Forward to wl-paste directly on Linux host
+if [[ "$HOST_OS" == "linux" ]]; then
+    _exec-host wl-paste "$@"
+    exit $?
+fi
+
+# macOS: emulate wl-paste with pbpaste
 NO_NEWLINE=false
 LIST_TYPES=false
 WATCH_CMD=()
@@ -22,7 +32,6 @@ while [[ $# -gt 0 ]]; do
             break
             ;;
         -p|--primary|-s|--seat|-t|--type)
-            # ignore
             case "$1" in
                 -s|--seat|-t|--type) shift 2 ;;
                 *) shift ;;
@@ -45,7 +54,7 @@ while [[ $# -gt 0 ]]; do
 done
 
 if $LIST_TYPES; then
-    # pbpaste is not supported MIME Type
+    # pbpaste does not support MIME types
     echo "text/plain"
     exit 0
 fi
@@ -55,10 +64,8 @@ if [[ ${#WATCH_CMD[@]} -gt 0 ]]; then
     exit 1
 fi
 
-OUTPUT=$(echo "pbpaste" | socat - UNIX-CONNECT:"$SOCKET")
-
 if $NO_NEWLINE; then
-    printf '%s' "$OUTPUT"
+    _exec-host pbpaste | tr -d '\n'
 else
-    printf '%s\n' "$OUTPUT"
+    _exec-host pbpaste
 fi

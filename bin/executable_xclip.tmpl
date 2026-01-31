@@ -1,0 +1,181 @@
+{{- if and (eq .chezmoi.os "linux") (not (contains "lima-" .chezmoi.hostname)) }}#!/bin/bash
+
+set -euo pipefail
+
+mode="in"
+selection="primary"
+target=""
+rmlastnl=false
+filter=false
+
+while [[ $# -gt 0 ]]; do
+    case "$1" in
+        -i|-in)         mode="in"; shift ;;
+        -o|-out)        mode="out"; shift ;;
+        -f|-filter)     filter=true; shift ;;
+        -r|-rmlastnl)   rmlastnl=true; shift ;;
+        -l|-loops)      shift 2 ;;  # ignored
+        -t|-target)     target="$2"; shift 2 ;;
+        -d|-display)    shift 2 ;;  # ignored
+        -selection)     selection="$2"; shift 2 ;;
+        -silent|-quiet|-verbose|-noutf8) shift ;;  # ignored
+        -version)       echo "xclip (wl-clipboard emulation)"; exit 0 ;;
+        -h|-help)
+            echo "Usage: xclip [-i|-o] [-selection primary|clipboard] [-t type] [file]"
+            exit 0
+            ;;
+        -*) shift ;;  # ignore unknown options
+        *)  file="$1"; shift ;;
+    esac
+done
+
+# Map selection (xclip allows abbreviations like 'p', 'clip', etc.)
+case "${selection:0:1}" in
+    p|P|s|S) sel_args=(--primary) ;;  # primary/secondary -> primary
+    c|C)     sel_args=() ;;            # clipboard is wl-clipboard default
+    *)       sel_args=(--primary) ;;
+esac
+
+if [[ "$mode" == "out" ]]; then
+    # Output mode
+    args=("${sel_args[@]}")
+    [[ -n "$target" ]] && args+=(--type "$target")
+    [[ "$target" == "TARGETS" ]] && exec wl-paste --list-types "${sel_args[@]}"
+
+    if [[ "$rmlastnl" == true ]]; then
+        wl-paste "${args[@]}" | sed -z 's/\n$//'
+    else
+        exec wl-paste "${args[@]}"
+    fi
+else
+    # Input mode
+    args=("${sel_args[@]}")
+    [[ -n "$target" ]] && args+=(--type "$target")
+    [[ "$rmlastnl" == true ]] && args+=(--trim-newline)
+
+    if [[ -n "${file:-}" ]]; then
+        input="$(cat "$file")"
+    else
+        input="$(cat)"
+    fi
+
+    [[ "$filter" == true ]] && printf '%s' "$input"
+    printf '%s' "$input" | wl-copy "${args[@]}"
+fi{{- end }}{{- if and (eq .chezmoi.os "linux") (contains "lima-" .chezmoi.hostname) }}#!/bin/bash
+
+if [ -z "$HOST_OS" ]; then
+  HOST_OS="$(_exec-host uname -s 2>/dev/null < /dev/null | tr '[:upper:]' '[:lower:]')"
+  export HOST_OS
+fi
+
+# Forward to xclip directly on Linux host
+if [[ "$HOST_OS" == "linux" ]]; then
+    _exec-host xclip "$@"
+    exit $?
+fi
+
+# macOS: emulate xclip with pbcopy/pbpaste
+SELECTION="primary"
+MODE="input"
+FILTER=0
+RMLASTNL=0
+VERBOSE=0
+SILENT=0
+FILES=()
+
+while [[ $# -gt 0 ]]; do
+    case "$1" in
+        -i|-in)              MODE="input"; shift ;;
+        -o|-out)             MODE="output"; shift ;;
+        -f|-filter)          FILTER=1; shift ;;
+        -r|-rmlastnl)        RMLASTNL=1; shift ;;
+        -l|-loops)           shift 2 ;;
+        -d|-display|-disp)   shift 2 ;;
+        -sel|-selection)
+            case "$2" in
+                p|primary)     SELECTION="primary" ;;
+                s|sec|secondary) SELECTION="secondary" ;;
+                c|clip|clipboard) SELECTION="clipboard" ;;
+                b|buffer)      SELECTION="primary" ;;
+                *)             SELECTION="$2" ;;
+            esac
+            shift 2
+            ;;
+        -t|-target)          shift 2 ;;
+        -noutf8)             shift ;;
+        -sensitive)          shift ;;
+        -wait)               shift 2 ;;
+        -silent)             SILENT=1; shift ;;
+        -quiet)              shift ;;
+        -verbose)            VERBOSE=1; shift ;;
+        -version)
+            echo "xclip (host-exec wrapper)"
+            exit 0
+            ;;
+        -h|-help)
+            cat <<'EOF'
+Usage: xclip [options] [files]
+  -i, -in           read stdin/files into selection (default)
+  -o, -out          write selection to stdout
+  -f, -filter       copy stdin to stdout as well as selection
+  -r, -rmlastnl     remove last newline from input
+  -l, -loops N      exit after N pastes (ignored)
+  -d, -display      X display to use (ignored)
+  -selection SEL    selection: primary(p)/secondary(s,sec)/clipboard(c,clip)
+  -t, -target       target atom (ignored)
+  -noutf8           legacy mode (ignored)
+  -sensitive        clear after one paste (ignored)
+  -wait N           clear after N ms (ignored)
+  -silent           suppress errors
+  -quiet            suppress foreground messages (ignored)
+  -verbose          verbose output
+  -version          show version
+  -h, -help         show this help
+EOF
+            exit 0
+            ;;
+        -*)
+            if [[ "$1" == "-v" ]]; then
+                FILES+=("$1")
+            elif [[ $SILENT -eq 0 ]]; then
+                echo "xclip: unrecognized option: $1" >&2
+            fi
+            shift
+            ;;
+        *)
+            FILES+=("$1")
+            shift
+            ;;
+    esac
+done
+
+[[ $VERBOSE -eq 1 ]] && echo "xclip: mode=$MODE selection=$SELECTION filter=$FILTER files=${FILES[*]}" >&2
+
+case "$MODE" in
+    input)
+        if [[ ${#FILES[@]} -gt 0 ]]; then
+            INPUT=$(cat "${FILES[@]}" 2>/dev/null)
+        else
+            if [[ $RMLASTNL -eq 1 || $FILTER -eq 1 ]]; then
+                INPUT=$(cat)
+            else
+                _exec-host pbcopy
+                exit $?
+            fi
+        fi
+
+        if [[ $RMLASTNL -eq 1 ]]; then
+            INPUT="${INPUT%$'\n'}"
+        fi
+
+        if [[ $FILTER -eq 1 ]]; then
+            printf '%s' "$INPUT"
+        fi
+
+        printf '%s' "$INPUT" | _exec-host pbcopy
+        ;;
+    output)
+        _exec-host pbpaste
+        ;;
+esac
+{{- end }}

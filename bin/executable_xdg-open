@@ -1,5 +1,12 @@
 #!/bin/bash
 
-SOCKET="/run/user/${UID}/host-exec.sock"
+if [ -z "$HOST_OS" ]; then
+  HOST_OS="$(_exec-host uname -s 2>/dev/null | tr '[:upper:]' '[:lower:]')"
+  export HOST_OS
+fi
 
-echo "open '$1'" | socat - UNIX-CONNECT:"$SOCKET"
+case "$HOST_OS" in
+  darwin) _exec-host open "$1" ;;
+  linux)  _exec-host xdg-open "$1" ;;
+  *)      echo "Unknown HOST_OS: $HOST_OS" >&2; exit 1 ;;
+esac
