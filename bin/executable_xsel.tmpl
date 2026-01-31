@@ -1,0 +1,257 @@
+{{- if and (eq .chezmoi.os "linux") (not (contains "lima-" .chezmoi.hostname)) }}#!/bin/bash
+# xsel wrapper for Wayland using wl-copy/wl-paste
+
+SELECTION=""
+MODE=""
+VERBOSE=0
+NO_DETACH=0
+
+while [[ $# -gt 0 ]]; do
+    case "$1" in
+        -p|--primary)
+            SELECTION="--primary"
+            shift
+            ;;
+        -s|--secondary)
+            # Wayland has no secondary selection, fall back to primary
+            SELECTION="--primary"
+            shift
+            ;;
+        -b|--clipboard)
+            SELECTION=""
+            shift
+            ;;
+        -i|--input)
+            MODE="input"
+            shift
+            ;;
+        -o|--output)
+            MODE="output"
+            shift
+            ;;
+        -a|--append)
+            MODE="append"
+            shift
+            ;;
+        -f|--follow)
+            MODE="follow"
+            shift
+            ;;
+        -c|--clear)
+            MODE="clear"
+            shift
+            ;;
+        -d|--delete)
+            MODE="clear"
+            shift
+            ;;
+        -k|--keep)
+            # wl-copy keeps by default (forks to background)
+            shift
+            ;;
+        -x|--exchange)
+            echo "xsel: --exchange not supported on Wayland" >&2
+            exit 1
+            ;;
+        -t|--selectionTimeout)
+            # ignore timeout
+            shift 2
+            ;;
+        -l|--logfile)
+            # ignore logfile
+            shift 2
+            ;;
+        -n|--nodetach)
+            NO_DETACH=1
+            shift
+            ;;
+        -v|--verbose)
+            VERBOSE=1
+            shift
+            ;;
+        -h|--help)
+            cat <<'EOF'
+Usage: xsel [options]
+Wayland wrapper using wl-copy/wl-paste
+
+Input options:
+  -i, --input      Read stdin into selection
+  -a, --append     Append stdin to selection
+  -f, --follow     Append to selection as stdin grows
+
+Output options:
+  -o, --output     Write selection to stdout
+
+Action options:
+  -c, --clear      Clear the selection
+  -d, --delete     Request deletion (same as clear)
+
+Selection options:
+  -p, --primary    Use PRIMARY selection (default)
+  -s, --secondary  Use SECONDARY (falls back to primary)
+  -b, --clipboard  Use CLIPBOARD selection
+
+Modifier options:
+  -k, --keep       Keep selection (default behavior)
+  -x, --exchange   Exchange selections (not supported)
+  -n, --nodetach   Run in foreground
+  -v, --verbose    Print debug info
+
+Other options:
+  -t ms, --selectionTimeout ms  Ignored
+  -l file, --logfile file       Ignored
+  -h, --help       Show this help
+  --version        Show version
+EOF
+            exit 0
+            ;;
+        --version)
+            echo "xsel (wl-clipboard wrapper)"
+            exit 0
+            ;;
+        --display)
+            # ignore X display option
+            shift 2
+            ;;
+        *)
+            shift
+            ;;
+    esac
+done
+
+# Auto-detect mode based on tty
+if [[ -z "$MODE" ]]; then
+    if [[ -t 0 && -t 1 ]]; then
+        MODE="output"
+    elif [[ ! -t 0 ]]; then
+        MODE="input"
+    else
+        MODE="output"
+    fi
+fi
+
+[[ $VERBOSE -eq 1 ]] && echo "xsel: mode=$MODE selection=${SELECTION:-(clipboard)}" >&2
+
+# Build wl-copy options
+WL_COPY_OPTS="$SELECTION"
+WL_PASTE_OPTS="$SELECTION"
+
+if [[ $NO_DETACH -eq 1 ]]; then
+    WL_COPY_OPTS="$WL_COPY_OPTS --foreground"
+fi
+
+case "$MODE" in
+    input)
+        wl-copy $WL_COPY_OPTS
+        ;;
+    append)
+        { wl-paste $WL_PASTE_OPTS 2>/dev/null; cat; } | wl-copy $WL_COPY_OPTS
+        ;;
+    follow)
+        while IFS= read -r line; do
+            { wl-paste $WL_PASTE_OPTS 2>/dev/null; echo "$line"; } | wl-copy $WL_COPY_OPTS
+        done
+        ;;
+    output)
+        wl-paste $WL_PASTE_OPTS
+        ;;
+    clear)
+        wl-copy $WL_COPY_OPTS --clear
+        ;;
+esac{{- end }}{{- if and (eq .chezmoi.os "linux") (contains "lima-" .chezmoi.hostname) }}#!/bin/bash
+
+SOCKET="/run/user/${UID}/host-exec.sock"
+
+SELECTION="primary"
+MODE=""
+VERBOSE=0
+
+while [[ $# -gt 0 ]]; do
+    case "$1" in
+        -p|--primary)   SELECTION="primary"; shift ;;
+        -s|--secondary) SELECTION="secondary"; shift ;;
+        -b|--clipboard) SELECTION="clipboard"; shift ;;
+        -i|--input)     MODE="input"; shift ;;
+        -o|--output)    MODE="output"; shift ;;
+        -a|--append)    MODE="append"; shift ;;
+        -f|--follow)    MODE="follow"; shift ;;
+        -c|--clear)     MODE="clear"; shift ;;
+        -d|--delete)    MODE="delete"; shift ;;
+        -k|--keep)      shift ;;  # ignore
+        -x|--exchange)  MODE="exchange"; shift ;;
+        -t|--selectionTimeout) shift 2 ;;  # ignore
+        -l|--logfile)   shift 2 ;;
+        -n|--nodetach)  shift ;;
+        -v|--verbose)   VERBOSE=1; shift ;;
+        -h|--help)
+            cat <<'EOF'
+Usage: xsel [options]
+  -i, --input      read stdin into selection
+  -o, --output     write selection to stdout
+  -a, --append     append stdin to selection
+  -f, --follow     follow stdin like tail -f
+  -c, --clear      clear selection
+  -d, --delete     request deletion from source
+  -p, --primary    use PRIMARY selection (default)
+  -s, --secondary  use SECONDARY selection
+  -b, --clipboard  use CLIPBOARD selection
+  -k, --keep       keep selection persistent
+  -x, --exchange   exchange PRIMARY and SECONDARY
+  -v, --verbose    verbose output
+  -h, --help       show this help
+EOF
+            exit 0
+            ;;
+        --version)
+            echo "xsel (lima-host-exec wrapper)"
+            exit 0
+            ;;
+        *)
+            shift ;;
+    esac
+done
+
+if [[ -z "$MODE" ]]; then
+    if [[ -t 0 && -t 1 ]]; then
+        MODE="output"
+    elif [[ ! -t 0 ]]; then
+        MODE="input"
+    else
+        MODE="output"
+    fi
+fi
+
+[[ $VERBOSE -eq 1 ]] && echo "xsel: mode=$MODE selection=$SELECTION" >&2
+
+case "$MODE" in
+    input)
+        {
+          echo "pbcopy"
+          cat
+        } | socat - UNIX-CONNECT:"$SOCKET"
+        ;;
+    append)
+        {
+          echo "{ pbpaste; cat; } | pbcopy"
+          cat
+        } | socat - UNIX-CONNECT:"$SOCKET"
+        ;;
+    follow)
+        # like `tail -f`
+        {
+            echo 'while IFS= read -r line; do { pbpaste; echo "$line"; } | pbcopy; done'
+            cat
+        } | socat - UNIX-CONNECT:"$SOCKET"
+        ;;
+    output)
+        echo "pbpaste" | socat - UNIX-CONNECT:"$SOCKET"
+        ;;
+    clear|delete)
+        echo "pbcopy < /dev/null" | socat - UNIX-CONNECT:"$SOCKET"
+        ;;
+    exchange)
+        echo "xsel: --exchange not supported (macOS has no secondary selection)" >&2
+        exit 1
+        ;;
+esac
+{{- end }}

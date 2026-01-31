@@ -29,5 +29,4 @@ bin/_exec-host
 bin/wl-copy
 bin/wl-paste
 bin/xdg-open
-bin/xsel
 {{- end }}
