@@ -1,6 +1,10 @@
 #!/bin/bash
 
-SOCAT_TARGET="${HOST_EXEC_TARGET:-UNIX-CONNECT:/run/user/${UID}/host-exec.sock}"
+if [ -n "$TMUX" ]; then
+  eval "$(tmux show-environment -s _HOST_EXEC_TARGET 2>/dev/null)" || true
+fi
+
+SOCAT_TARGET="${_HOST_EXEC_TARGET:-UNIX-CONNECT:/run/user/${UID}/host-exec.sock}"
 
 if [ $# -eq 0 ]; then
     socat - "$SOCAT_TARGET"

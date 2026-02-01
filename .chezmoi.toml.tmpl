@@ -3,6 +3,8 @@
 {{- $signingkey := promptStringOnce . "signingkey" "Signing key" -}}
 {{- $vimrepo := promptStringOnce . "vimrepo" "Vim repository" -}}
 {{- $memorepo := promptStringOnce . "memorepo" "Memo repository" -}}
+{{- $hostType := promptChoiceOnce . "hostType" "Host type" (list "local" "remote") "local" -}}
+{{- $classisType := promptChoiceOnce . "classisType" "Environment type" (list "gui" "cli") "gui" }}
 
 [data]
     gitname = {{ $gitname | quote }}
@@ -10,3 +12,5 @@
     signingkey = {{ $signingkey | quote }}
     vimrepo = {{ $vimrepo | quote }}
     memorepo = {{ $memorepo | quote }}
+    hostType = {{ $hostType | quote }}
+    classisType = {{ $classisType | quote }}

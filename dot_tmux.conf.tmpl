@@ -82,6 +82,10 @@ set-option -s copy-command "wl-copy"
 set-option -s copy-command "pbcopy"
 {{- end }}
 
+{{- if eq .hostType "remote" }}
+set-option -g update-environment "_HOST_EXEC_TARGET"
+{{- end }}
+
 # window
 bind -n M-c new-window -c "#{pane_current_path}"
 bind -n M-l next-window

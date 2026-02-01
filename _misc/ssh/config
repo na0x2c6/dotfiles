@@ -1,0 +1,9 @@
+# Host xxxx
+RemoteForward /tmp/.host-exec-%r-%L.sock /run/user/%i/host-exec.sock
+PermitLocalCommand yes
+LocalCommand socat UNIX-LISTEN:/run/user/%i/host-exec.sock,fork,unlink-early EXEC:bash &
+StreamLocalBindUnlink yes
+SetEnv _HOST_EXEC_TARGET=/tmp/.host-exec-%r-%L.sock
+ControlMaster auto
+ControlPath ~/.ssh/sockets/%r@%h-%p
+ControlPersist 10m

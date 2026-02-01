@@ -77,32 +77,16 @@ export DOCKER_BUILDKIT=0
 export DOCKER_HOST=unix:///run/user/$UID/podman/podman.sock
 {{ end }}
 
-{{ if and (eq .chezmoi.os "linux") (not (contains "lima-" .chezmoi.hostname)) }}
-alias vim=vimx
-export EDITOR='vimx'
-export VISUAL='vimx'
-{{ end }}
-
-{{ if and (eq .chezmoi.os "linux") (contains "lima-" .chezmoi.hostname) }}
+{{ if eq .hostType "remote" }}
 alias open=xdg-open
 alias pbcopy=wl-copy
 alias pbpaste=wl-paste
-export EDITOR='vim'
-export VISUAL='vim'
-export SSH_AUTH_SOCK="$XDG_RUNTIME_DIR/ssh-agent.socket"
-if nc -z 127.0.0.1 19283 2>/dev/null; then
-  export HOST_EXEC_TARGET="TCP:127.0.0.1:19283"
-fi
-### host ssh config:
-# RemoteForward 19283 localhost:19283
-# PermitLocalCommand yes
-# LocalCommand nohup socat TCP-LISTEN:19283,fork,reuseaddr EXEC:bash >/dev/null 2>&1 &
-###
 {{ end }}
 
-{{ if eq .chezmoi.os "darwin" }}
 export EDITOR='vim'
 export VISUAL='vim'
+
+{{ if eq .chezmoi.os "darwin" }}
 export PATH="/opt/homebrew/bin:$PATH"
 export MANPATH="/opt/homebrew/share/man:$MANPATH"
 {{ end }}
@@ -114,6 +98,10 @@ PATH="$PATH:/usr/sbin:/sbin"
 export PATH
 # Lima END
 {{- end }}
+
+if [[ -n SSH_AUTH_SOCK ]] ; then
+  export SSH_AUTH_SOCK="$XDG_RUNTIME_DIR/ssh-agent.socket"
+fi
 
 # for drop-in
 find ~/.zsh.d/ -type f | grep -E '\.zsh$' | while read -r file ; do

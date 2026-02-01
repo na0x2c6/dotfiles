@@ -1,14 +1,9 @@
-{{- $classisType := "gui" }}
-{{- if contains "lima-" .chezmoi.hostname }}
-    {{- $classisType = "lima" }}
-{{- end }}
-
 LICENSE
 README.md
 _*.sh
 *.ini
 
-{{- if or (ne .chezmoi.os "linux") (ne $classisType "gui") }}
+{{- if or (ne .chezmoi.os "linux") (ne .classisType "gui") }}
 .config/fusuma
 .config/gromit-mpx.cfg
 .config/systemd
@@ -24,7 +19,7 @@ run_once_before_kde-*
 run_onchange_gnome-*
 {{- end }}
 
-{{- if (ne $classisType "lima") }}
+{{- if eq .hostType "local" }}
 bin/_exec-host
 bin/wl-copy
 bin/wl-paste
