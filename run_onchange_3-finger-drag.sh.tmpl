@@ -1,0 +1,13 @@
+#!/bin/bash
+
+set -Eeuv
+
+if [[ $(uname -s) != "Linux" ]] ; then
+    exit 0
+fi
+
+# three-finger-drag.service hash: {{ include "dot_config/systemd/user/three-finger-drag.service" | sha256sum }}
+systemctl --user daemon-reload
+systemctl --user enable three-finger-drag.service
+systemctl --user restart three-finger-drag.service
+

@@ -1,0 +1,7 @@
+{
+    "acceleration": 1.0,
+    "dragEndDelay": 0,
+    "logFile": "stdout",
+    "logLevel": "info",
+    "responseTime": 5
+}

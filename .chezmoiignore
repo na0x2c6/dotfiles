@@ -8,12 +8,15 @@ _*.sh
 .config/gromit-mpx.cfg
 .config/systemd
 .config/xremap
+.config/linux-3-finger-drag
 .var
 common-load-ydotool-service.sh
 desktop-common-installl.sh
 gnome-*
 common-load-xremap-service.sh
+common-load-xremap-service.sh
 common-load-fusuma-service.sh
+3-finger-drag.sh
 run_once_before_gnome-*
 run_once_before_kde-*
 run_onchange_gnome-*

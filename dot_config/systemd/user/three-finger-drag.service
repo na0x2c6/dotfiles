@@ -1,0 +1,12 @@
+[Unit]
+Description=Three-finger drag gestures for Linux
+After=graphical-session.target
+
+[Service]
+Type=exec
+ExecStart=%h/.cargo/bin/linux-3-finger-drag
+Restart=on-failure
+RestartSec=5
+
+[Install]
+WantedBy=default.target
