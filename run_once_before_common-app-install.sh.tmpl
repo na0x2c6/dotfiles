@@ -33,12 +33,7 @@ if [[ ! -x ~/go/bin/migemogrep ]] ; then
 fi
 
 if [[ ! -x ~/go/bin/peco ]] ; then
-    [[ -e https://github.com/peco/peco.git ]] || git clone https://github.com/peco/peco.git \
-        ~/go/src/github.com/peco/peco
-
-    cd ~/go/src/github.com/peco/peco
-    make build
-    cp $(find ./releases -type f -perm /u+x | sort -r --version-sort) ~/go/bin/peco
+    go install github.com/peco/peco/cmd/peco@latest
 fi
 
 if [[ ! -x ~/go/bin/memo ]] ; then
