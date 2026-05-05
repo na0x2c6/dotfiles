@@ -38,6 +38,7 @@ title: Home
   <li>
     <time datetime="{{ post.date | date_to_xmlschema }}">{{ post.date | date: "%Y-%m-%d" }}</time>
     — <a href="{{ post.url | relative_url }}">{{ post.title }}</a>
+    <p>{{ post.content | strip_html | strip_newlines | truncate: 80 }}</p>
   </li>
 {% endfor %}
 </ul>
