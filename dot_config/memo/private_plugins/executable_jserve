@@ -1,0 +1,11 @@
+#!/bin/sh
+
+if [ "x$1" = "x-usage" ]; then
+  echo "serve with jekyll [--port PORT] [--host HOST] ..."
+  exit
+fi
+
+jekyll serve --watch --open-url \
+  --source $MEMODIR/../ \
+  --destination $MEMODIR/../_site \
+  "$@"

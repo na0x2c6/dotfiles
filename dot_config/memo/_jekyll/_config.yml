@@ -1,0 +1,17 @@
+title: memo list
+description: メモファイル閲覧用
+permalink: /:categories/:year/:month/:day/:title/
+
+plugins:
+  - jekyll-archives
+
+jekyll-archives:
+  enabled:
+    - categories
+    - tags
+  layouts:
+    category: category
+    tag: tag
+  permalinks:
+    category: /category/:name/
+    tag: /tag/:name/

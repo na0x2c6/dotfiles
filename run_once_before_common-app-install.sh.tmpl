@@ -11,8 +11,10 @@ source "{{ .chezmoi.config.sourceDir }}/_utils.sh"
 
 sudo dnf install -y vim-enhanced tmux zsh \
     ripgrep global cmigemo golang rust cargo clang podman-docker \
-    socat
+    socat ruby-devel
 sudo dnf group install -y c-development development-tools
+
+gem install jekyll jekyll-archives
 
 systemctl --user enable --now podman.socket
 sudo loginctl enable-linger $USER
@@ -48,8 +50,8 @@ if [[ -n "{{ .vimrepo }}" ]] && [[ ! -e ~/.vim ]] ; then
     git clone {{ .vimrepo }} ~/.vim
 fi
 
-if [[ -n "{{ .memorepo }}" ]] && [[ ! -e ~/.config/memo/_memo ]] ; then
-    git clone {{ .memorepo }} ~/.config/memo/_memo
+if [[ -n "{{ .memorepo }}" ]] && [[ ! -e ~/.config/memo/_posts ]] ; then
+    git clone {{ .memorepo }} ~/.config/memo/_posts
 fi
 
 if ! which diff-highlight > /dev/null ; then
