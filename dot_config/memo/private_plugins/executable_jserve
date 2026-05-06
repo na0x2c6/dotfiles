@@ -1,11 +1,38 @@
 #!/bin/sh
+set -eu
 
-if [ "x$1" = "x-usage" ]; then
+if [ "${1-}" = "-usage" ]; then
   echo "serve with jekyll [--port PORT] [--host HOST] ..."
   exit
 fi
 
+: "${MEMODIR:?MEMODIR is not set}"
+
+JEKYLL_DIR="$MEMODIR/../_jekyll"
+REL_PREFIX="../$(basename "$MEMODIR")"
+
+# Remove broken symlinks directly under _jekyll
+find "$JEKYLL_DIR" -mindepth 1 -maxdepth 1 -type l ! -exec test -e {} \; -delete
+
+# Create symlinks under _jekyll for files NOT starting with yyyy-MM-dd
+find "$MEMODIR" -mindepth 1 -maxdepth 1 -type f \
+  ! -name '.*' \
+  ! -name '[0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9]*' \
+  -exec sh -c '
+    rel_prefix=$1
+    jekyll_dir=$2
+    shift 2
+    for f do
+      name=${f##*/}
+      dest=$jekyll_dir/$name
+      if [ -e "$dest" ] || [ -L "$dest" ]; then
+        continue
+      fi
+      ln -s "$rel_prefix/$name" "$dest"
+    done
+  ' _ "$REL_PREFIX" "$JEKYLL_DIR" {} +
+
 jekyll serve --watch --open-url \
-  --source $MEMODIR/../ \
-  --destination $MEMODIR/../_site \
+  --source "$MEMODIR/../_jekyll/" \
+  --destination "$MEMODIR/../_jekyll/_site" \
   "$@"
