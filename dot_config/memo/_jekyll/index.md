@@ -31,6 +31,28 @@ title: Home
 {% endfor %}
 </ul>
 
+## Files
+
+<ul>
+{% for file in site.static_files %}
+  {% assign segments = file.path | split: '/' %}
+  {% if segments.size == 2 %}
+    <li>
+      <a href="{{ file.path | relative_url }}">{{ file.name }}</a>
+    </li>
+  {% endif %}
+{% endfor %}
+
+{% for page in site.pages %}
+  {% assign page_segments = page.path | split: '/' %}
+  {% if page_segments.size == 1 and page.path != "index.md" %}
+    <li>
+      <a href="{{ page.url | relative_url }}">{{ page.title | default: page.path }}</a>
+    </li>
+  {% endif %}
+{% endfor %}
+</ul>
+
 ## All posts
 
 <ul>
