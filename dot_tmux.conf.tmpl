@@ -82,6 +82,9 @@ set-option -s copy-command "wl-copy"
 set-option -s copy-command "pbcopy"
 {{- end }}
 
+bind-key -T copy-mode-vi y     send-keys -X copy-pipe
+bind-key -T copy-mode-vi Enter send-keys -X copy-pipe
+
 {{- if eq .hostType "remote" }}
 set-option -g update-environment "_HOST_EXEC_TARGET"
 {{- end }}
