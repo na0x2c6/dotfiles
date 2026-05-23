@@ -20,9 +20,11 @@ modmap:
     remap:
       CapsLock: LeftCtrl
 
-  - name: AT Translated Set 2 keyboard
+  - name: swap LeftMeta and Alt_L
     device:
-      only: 'AT Translated Set 2 keyboard'
+      only:
+        - 'AT Translated Set 2 keyboard'
+        - 'SIGMACHIP USB Keyboard'
     remap:
       Alt_L: LeftMeta
       LeftMeta: Alt_L
