@@ -25,6 +25,7 @@ modmap:
       only:
         - 'AT Translated Set 2 keyboard'
         - 'SIGMACHIP USB Keyboard'
+        - 'Primax HP Wired Desktop 320K Keyboard'
     remap:
       Alt_L: LeftMeta
       LeftMeta: Alt_L
