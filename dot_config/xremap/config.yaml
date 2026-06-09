@@ -71,6 +71,9 @@ keymap:
       Super-LeftBrace: Alt_L-Left
       Super-RightBrace: Alt_L-Right
 
+      Super-q: C-q
+      C-q: Super-q
+
   - name: deleting like Emacs
     application:
       not: *terminals
