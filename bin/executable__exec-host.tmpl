@@ -1,3 +1,4 @@
+{{- if eq .hostType "remote" -}}
 #!/bin/bash
 
 if [ -n "$TMUX" ]; then
@@ -18,3 +19,4 @@ else
         } | socat - "$SOCAT_TARGET"
     fi
 fi
+{{- end -}}

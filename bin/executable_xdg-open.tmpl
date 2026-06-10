@@ -1,3 +1,4 @@
+{{- if eq .hostType "remote" -}}
 #!/bin/bash
 
 if [ -z "$HOST_OS" ]; then
@@ -10,3 +11,4 @@ case "$HOST_OS" in
   linux)  _exec-host xdg-open "$1" ;;
   *)      echo "Unknown HOST_OS: $HOST_OS" >&2; exit 1 ;;
 esac
+{{- end -}}

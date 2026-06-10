@@ -1,4 +1,5 @@
-{{- if and (eq .chezmoi.os "linux") (not (contains "lima-" .chezmoi.hostname)) }}#!/bin/bash
+{{- if and (eq .chezmoi.os "linux") (eq .hostType "local") -}}
+#!/bin/bash
 # xsel wrapper for Wayland using wl-copy/wl-paste
 
 SELECTION=""
@@ -158,7 +159,11 @@ case "$MODE" in
     clear)
         wl-copy $WL_COPY_OPTS --clear
         ;;
-esac{{- end }}{{- if and (eq .chezmoi.os "linux") (contains "lima-" .chezmoi.hostname) }}#!/bin/bash
+esac
+
+{{- end -}}
+{{- if and (eq .chezmoi.os "linux") (eq .hostType "remote") -}}
+#!/bin/bash
 
 if [ -z "$HOST_OS" ]; then
   HOST_OS="$(_exec-host uname -s 2>/dev/null < /dev/null | tr '[:upper:]' '[:lower:]')"
@@ -255,4 +260,5 @@ case "$MODE" in
         exit 1
         ;;
 esac
-{{- end }}
+
+{{- end -}}

@@ -1,3 +1,4 @@
+{{- if eq .hostType "remote" -}}
 #!/bin/bash
 
 if [ -z "$HOST_OS" ]; then
@@ -69,3 +70,4 @@ if $NO_NEWLINE; then
 else
     _exec-host pbpaste
 fi
+{{- end -}}
