@@ -1,0 +1,8 @@
+#!/bin/bash
+
+if [ "x$1" = "x-usage" ]; then
+  echo launch a shell in memo dir
+  exit
+fi
+
+( cd "$MEMODIR" && exec "$SHELL" )
