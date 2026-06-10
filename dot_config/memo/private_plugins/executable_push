@@ -5,4 +5,9 @@ if [ "x$1" = "x-usage" ]; then
   exit
 fi
 
-cd $MEMODIR && git add -A --ignore-errors && git commit -m "Commit on $(hostname): $(date '+%Y-%m-%d %H:%M:%S')" && git push origin main
+set -Eeu
+
+cd "$MEMODIR"
+git add -A --ignore-errors
+git commit -m "Commit on $(hostname): $(date '+%Y-%m-%d %H:%M:%S')" || true
+git push origin main
