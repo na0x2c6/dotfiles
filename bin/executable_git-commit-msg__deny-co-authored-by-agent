@@ -1,0 +1,12 @@
+#!/bin/sh
+# commit-msg hook: reject commits whose message contains Co-Authored-By: Claude
+
+commit_msg_file="$1"
+
+if grep -iqE '^[[:space:]]*Co-authored-by:[[:space:]].*claude' "$commit_msg_file"; then
+    echo "Error: commit message contains 'Co-Authored-By: Claude'." >&2
+    echo "Remove that line and commit again." >&2
+    exit 1
+fi
+
+exit 0

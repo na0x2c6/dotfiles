@@ -33,3 +33,6 @@
 	useForceIfIncludes = true
 [commit]
 	cleanup = scissors
+[hook "deny-co-authored-by-agent"]
+    event = commit-msg
+    command = ~/bin/git-commit-msg__deny-co-authored-by-agent
