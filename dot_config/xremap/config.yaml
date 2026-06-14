@@ -19,6 +19,7 @@ modmap:
   - name: Global
     remap:
       CapsLock: LeftCtrl
+      LeftCtrl: CapsLock
 
   - name: swap LeftMeta and Alt_L
     device:
